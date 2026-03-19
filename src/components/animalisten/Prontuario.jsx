@@ -493,6 +493,23 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
           {/* Seção: Tutor */}
           <div className="pront-section">
             <SectionHeader icon={User} title="Identificação do Tutor / Responsável" />
+            {editMode && !prontuario && (
+              <div className="pront-field" style={{ marginBottom: '12px' }}>
+                <label className="pront-label">Selecionar Tutor Cadastrado</label>
+                <select
+                  className="pront-input pront-select"
+                  value={selectedTutorId}
+                  onChange={(e) => handleSelectTutor(e.target.value)}
+                >
+                  <option value="">— Selecione um tutor —</option>
+                  {tutores.map((t) => (
+                    <option key={t.id} value={t.id}>
+                      {t.nome} {t.cpf ? `(CPF: ${t.cpf})` : ''}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
             <div className="pront-grid-2">
               {renderField('Nome Completo', 'tutor_nome')}
               {renderField('CPF', 'tutor_cpf')}
@@ -509,6 +526,28 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
           {/* Seção: Animal */}
           <div className="pront-section">
             <SectionHeader icon={PawPrint} title="Identificação do Paciente" />
+            {editMode && !prontuario && selectedTutorId && (
+              <div className="pront-field" style={{ marginBottom: '12px' }}>
+                <label className="pront-label">Selecionar Paciente do Tutor</label>
+                <select
+                  className="pront-input pront-select"
+                  value={selectedPacienteId}
+                  onChange={(e) => handleSelectPaciente(e.target.value)}
+                >
+                  <option value="">— Selecione um paciente —</option>
+                  {pacientesDoTutor.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.nome} {p.especie ? `(${p.especie})` : ''}
+                    </option>
+                  ))}
+                </select>
+                {pacientesDoTutor.length === 0 && (
+                  <p className="text-xs" style={{ color: 'var(--text-muted)', marginTop: '4px' }}>
+                    Este tutor não tem pacientes cadastrados.
+                  </p>
+                )}
+              </div>
+            )}
             <div className="pront-grid-3">
               {renderField('Nome', 'animal_nome')}
               {renderField('Espécie', 'animal_especie')}
