@@ -496,7 +496,8 @@ body {
   font-size: 0.9rem;
   font-family: inherit;
   color: var(--text-primary);
-  background: var(--surface);
+  background: var(--background-alt);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
   transition: all var(--transition);
 }
 
