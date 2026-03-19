@@ -1,6 +1,27 @@
 import { useState } from 'react';
 import { User, PawPrint, Plus, Trash2, Edit2, Save, ArrowLeft, Search, ChevronDown, ChevronUp, Phone, Mail, MapPin, CreditCard, Weight, Dna, Calendar, Heart, Scissors, AlertTriangle, FileText, Ruler } from 'lucide-react';
 
+const maskCPF = (value) => {
+  return value
+    .replace(/\D/g, '')
+    .slice(0, 11)
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+};
+
+const maskPhone = (value) => {
+  const digits = value.replace(/\D/g, '').slice(0, 11);
+  if (digits.length <= 10) {
+    return digits
+      .replace(/(\d{2})(\d)/, '($1) $2')
+      .replace(/(\d{4})(\d)/, '$1-$2');
+  }
+  return digits
+    .replace(/(\d{2})(\d)/, '($1) $2')
+    .replace(/(\d{5})(\d)/, '$1-$2');
+};
+
 const emptyTutor = {
   nome: '', cpf: '', telefone: '', email: '', endereco: '', observacoes: '',
 };
