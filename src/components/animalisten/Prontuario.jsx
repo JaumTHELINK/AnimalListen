@@ -378,7 +378,11 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
             <Printer size={14} />
             <span className="btn-label">Imprimir</span>
           </button>
-          <button className="btn btn-primary btn-sm" onClick={handleSave}>
+          <button className="btn btn-outline btn-sm" onClick={() => handleSave('incompleto')} style={{ borderColor: 'var(--warning)', color: 'var(--warning)' }}>
+            <Clock size={14} />
+            <span className="btn-label">Salvar Incompleto</span>
+          </button>
+          <button className="btn btn-primary btn-sm" onClick={() => handleSave('completo')}>
             <Save size={14} />
             {saved ? '✓ Salvo!' : 'Salvar'}
           </button>
