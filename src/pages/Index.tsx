@@ -144,6 +144,8 @@ function Index() {
             onSelectProntuario={handleSelectProntuario}
           />
         );
+      case 'configuracoes':
+        return <Configuracoes />;
       default:
         return (
           <Dashboard
