@@ -3,6 +3,7 @@ import Login from '../components/animalisten/Login';
 import Sidebar from '../components/animalisten/Sidebar';
 import Dashboard from '../components/animalisten/Dashboard';
 import Prontuario from '../components/animalisten/Prontuario';
+import ProntuarioHub from '../components/animalisten/ProntuarioHub';
 import Internacao from '../components/animalisten/Internacao';
 import HistoricoPaciente from '../components/animalisten/HistoricoPaciente';
 import CadastroTutor from '../components/animalisten/CadastroTutor';
