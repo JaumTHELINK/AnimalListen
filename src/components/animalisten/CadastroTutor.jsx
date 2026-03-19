@@ -289,7 +289,7 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
                 </div>
                 <div className="ct-form-field">
                   <label><Phone size={14} /> Telefone</label>
-                  <input className="form-input" value={tutorForm.telefone} onChange={e => setTutorForm({ ...tutorForm, telefone: e.target.value })} placeholder="(00) 00000-0000" />
+                  <input className="form-input" value={tutorForm.telefone} onChange={e => setTutorForm({ ...tutorForm, telefone: maskPhone(e.target.value) })} placeholder="(00) 00000-0000" />
                 </div>
                 <div className="ct-form-field">
                   <label><Mail size={14} /> Email</label>
