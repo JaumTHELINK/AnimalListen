@@ -598,11 +598,18 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
             </div>
             <div className="pront-grid-4">
               {renderField('Idade', 'animal_idade')}
-              {renderField('Sexo', 'animal_sexo', 'select', { options: ['Macho', 'Fêmea', 'Macho Castrado', 'Fêmea Castrada'] })}
+              {renderField('Sexo', 'animal_sexo', 'select', { options: ['Macho', 'Fêmea'] })}
               {renderField('Peso (kg)', 'animal_peso', 'number', { step: '0.1' })}
+              {renderField('Porte', 'animal_porte', 'select', { options: ['Pequeno', 'Médio', 'Grande'] })}
+            </div>
+            <div className="pront-grid-3">
+              {renderField('Pelagem', 'animal_pelagem')}
+              {renderField('Microchip', 'animal_microchip')}
+              {renderField('Castrado', 'animal_castrado', 'select', { options: ['Sim', 'Não'] })}
             </div>
             <div className="pront-grid-2">
-              {renderField('Microchip', 'animal_microchip')}
+              {renderField('Alergias', 'animal_alergias', 'textarea', { rows: 2 })}
+              {renderField('Doença Crônica', 'animal_doenca_cronica', 'textarea', { rows: 2 })}
             </div>
           </div>
 
