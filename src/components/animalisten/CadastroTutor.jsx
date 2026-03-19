@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { User, PawPrint, Plus, Trash2, Edit2, Save, ArrowLeft, Search, ChevronDown, ChevronUp, Phone, Mail, MapPin, CreditCard, Weight, Dna, Calendar, Heart } from 'lucide-react';
+import { User, PawPrint, Plus, Trash2, Edit2, Save, ArrowLeft, Search, ChevronDown, ChevronUp, Phone, Mail, MapPin, CreditCard, Weight, Dna, Calendar, Heart, Scissors, AlertTriangle, FileText, Ruler } from 'lucide-react';
 
 const emptyTutor = {
-  nome: '', cpf: '', telefone: '', email: '', endereco: '',
+  nome: '', cpf: '', telefone: '', email: '', endereco: '', observacoes: '',
 };
 
 const emptyPaciente = {
   nome: '', especie: 'Canino', raca: '', idade: '', sexo: 'Macho', peso: '', microchip: '',
+  porte: '', pelagem: '', alergias: '', doenca_cronica: '', castrado: false,
 };
 
 export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onSavePaciente, onDeletePaciente }) {
@@ -20,6 +21,7 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
   const [search, setSearch] = useState('');
   const [saving, setSaving] = useState(false);
   const [expandedTutor, setExpandedTutor] = useState(null);
+  const [tutorTab, setTutorTab] = useState('dados');
 
   const filteredTutores = tutores.filter(t =>
     t.nome?.toLowerCase().includes(search.toLowerCase()) ||
@@ -53,6 +55,7 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
       telefone: tutor.telefone || '',
       email: tutor.email || '',
       endereco: tutor.endereco || '',
+      observacoes: tutor.observacoes || '',
     });
     setEditingTutorId(tutor.id);
     setView('form');
@@ -99,6 +102,11 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
       sexo: p.sexo || 'Macho',
       peso: p.peso || '',
       microchip: p.microchip || '',
+      porte: p.porte || '',
+      pelagem: p.pelagem || '',
+      alergias: p.alergias || '',
+      doenca_cronica: p.doenca_cronica || '',
+      castrado: p.castrado || false,
     });
     setEditingPacienteId(p.id);
     setShowPacienteForm(true);
@@ -120,6 +128,7 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
     setShowPacienteForm(false);
     setPacienteForm(emptyPaciente);
     setEditingPacienteId(null);
+    setTutorTab('dados');
   };
 
   const currentTutor = selectedTutor ? tutores.find(t => t.id === selectedTutor.id) || selectedTutor : null;
@@ -150,22 +159,13 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
 
         <div className="ct-search">
           <Search size={18} />
-          <input
-            type="text"
-            placeholder="Buscar por nome, CPF ou telefone..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
-          {search && (
-            <button className="ct-search-clear" onClick={() => setSearch('')}>✕</button>
-          )}
+          <input type="text" placeholder="Buscar por nome, CPF ou telefone..." value={search} onChange={e => setSearch(e.target.value)} />
+          {search && <button className="ct-search-clear" onClick={() => setSearch('')}>✕</button>}
         </div>
 
         {filteredTutores.length === 0 ? (
           <div className="ct-empty">
-            <div className="ct-empty-icon">
-              <User size={48} />
-            </div>
+            <div className="ct-empty-icon"><User size={48} /></div>
             <h3>Nenhum tutor encontrado</h3>
             <p>{search ? 'Tente outro termo de busca' : 'Comece cadastrando o primeiro tutor'}</p>
             {!search && (
@@ -179,9 +179,7 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
             {filteredTutores.map(tutor => (
               <div key={tutor.id} className="ct-card" onClick={() => openDetail(tutor)}>
                 <div className="ct-card-top">
-                  <div className="ct-card-avatar">
-                    {tutor.nome?.charAt(0)?.toUpperCase() || 'T'}
-                  </div>
+                  <div className="ct-card-avatar">{tutor.nome?.charAt(0)?.toUpperCase() || 'T'}</div>
                   <div className="ct-card-main">
                     <h3>{tutor.nome}</h3>
                     <div className="ct-card-meta">
@@ -197,10 +195,7 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
 
                 {tutor.pacientes?.length > 0 && (
                   <div className="ct-card-pets-section">
-                    <button
-                      className="ct-card-pets-toggle"
-                      onClick={e => { e.stopPropagation(); setExpandedTutor(expandedTutor === tutor.id ? null : tutor.id); }}
-                    >
+                    <button className="ct-card-pets-toggle" onClick={e => { e.stopPropagation(); setExpandedTutor(expandedTutor === tutor.id ? null : tutor.id); }}>
                       {expandedTutor === tutor.id ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                       Ver {tutor.pacientes.length} paciente(s)
                     </button>
@@ -219,12 +214,8 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
                 )}
 
                 <div className="ct-card-actions" onClick={e => e.stopPropagation()}>
-                  <button className="btn-icon" title="Editar" onClick={() => handleEditTutor(tutor)}>
-                    <Edit2 size={15} />
-                  </button>
-                  <button className="btn-icon danger" title="Excluir" onClick={() => handleDeleteTutor(tutor.id)}>
-                    <Trash2 size={15} />
-                  </button>
+                  <button className="btn-icon" title="Editar" onClick={() => handleEditTutor(tutor)}><Edit2 size={15} /></button>
+                  <button className="btn-icon danger" title="Excluir" onClick={() => handleDeleteTutor(tutor.id)}><Trash2 size={15} /></button>
                 </div>
               </div>
             ))}
@@ -246,86 +237,74 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
         </div>
 
         <div className="ct-form-card">
-          <div className="ct-form-section-header">
-            <User size={20} />
-            <div>
-              <h3>Informações Pessoais</h3>
-              <p>Preencha os dados do responsável pelo animal</p>
-            </div>
+          {/* Tabs */}
+          <div className="ct-tabs">
+            <button className={`ct-tab ${tutorTab === 'dados' ? 'active' : ''}`} onClick={() => setTutorTab('dados')}>
+              <User size={16} /> Dados Pessoais
+            </button>
+            <button className={`ct-tab ${tutorTab === 'observacoes' ? 'active' : ''}`} onClick={() => setTutorTab('observacoes')}>
+              <FileText size={16} /> Observações
+            </button>
           </div>
 
-          <div className="ct-form-grid">
-            <div className="ct-form-field ct-form-full">
-              <label>
-                <User size={14} />
-                Nome Completo <span className="ct-required">*</span>
-              </label>
-              <input
-                className="form-input"
-                value={tutorForm.nome}
-                onChange={e => setTutorForm({ ...tutorForm, nome: e.target.value })}
-                placeholder="Digite o nome completo do tutor"
-              />
-            </div>
+          {tutorTab === 'dados' && (
+            <>
+              <div className="ct-form-section-header">
+                <User size={20} />
+                <div>
+                  <h3>Informações Pessoais</h3>
+                  <p>Preencha os dados do responsável pelo animal</p>
+                </div>
+              </div>
 
-            <div className="ct-form-field">
-              <label>
-                <CreditCard size={14} />
-                CPF
-              </label>
-              <input
-                className="form-input"
-                value={tutorForm.cpf}
-                onChange={e => setTutorForm({ ...tutorForm, cpf: e.target.value })}
-                placeholder="000.000.000-00"
-              />
-            </div>
+              <div className="ct-form-grid">
+                <div className="ct-form-field ct-form-full">
+                  <label><User size={14} /> Nome Completo <span className="ct-required">*</span></label>
+                  <input className="form-input" value={tutorForm.nome} onChange={e => setTutorForm({ ...tutorForm, nome: e.target.value })} placeholder="Digite o nome completo do tutor" />
+                </div>
+                <div className="ct-form-field">
+                  <label><CreditCard size={14} /> CPF</label>
+                  <input className="form-input" value={tutorForm.cpf} onChange={e => setTutorForm({ ...tutorForm, cpf: e.target.value })} placeholder="000.000.000-00" />
+                </div>
+                <div className="ct-form-field">
+                  <label><Phone size={14} /> Telefone</label>
+                  <input className="form-input" value={tutorForm.telefone} onChange={e => setTutorForm({ ...tutorForm, telefone: e.target.value })} placeholder="(00) 00000-0000" />
+                </div>
+                <div className="ct-form-field">
+                  <label><Mail size={14} /> Email</label>
+                  <input className="form-input" type="email" value={tutorForm.email} onChange={e => setTutorForm({ ...tutorForm, email: e.target.value })} placeholder="email@exemplo.com" />
+                </div>
+                <div className="ct-form-field ct-form-full">
+                  <label><MapPin size={14} /> Endereço</label>
+                  <input className="form-input" value={tutorForm.endereco} onChange={e => setTutorForm({ ...tutorForm, endereco: e.target.value })} placeholder="Rua, número, bairro, cidade - UF" />
+                </div>
+              </div>
+            </>
+          )}
 
-            <div className="ct-form-field">
-              <label>
-                <Phone size={14} />
-                Telefone
-              </label>
-              <input
-                className="form-input"
-                value={tutorForm.telefone}
-                onChange={e => setTutorForm({ ...tutorForm, telefone: e.target.value })}
-                placeholder="(00) 00000-0000"
-              />
-            </div>
-
-            <div className="ct-form-field">
-              <label>
-                <Mail size={14} />
-                Email
-              </label>
-              <input
-                className="form-input"
-                type="email"
-                value={tutorForm.email}
-                onChange={e => setTutorForm({ ...tutorForm, email: e.target.value })}
-                placeholder="email@exemplo.com"
-              />
-            </div>
-
-            <div className="ct-form-field ct-form-full">
-              <label>
-                <MapPin size={14} />
-                Endereço
-              </label>
-              <input
-                className="form-input"
-                value={tutorForm.endereco}
-                onChange={e => setTutorForm({ ...tutorForm, endereco: e.target.value })}
-                placeholder="Rua, número, bairro, cidade - UF"
-              />
-            </div>
-          </div>
+          {tutorTab === 'observacoes' && (
+            <>
+              <div className="ct-form-section-header">
+                <FileText size={20} />
+                <div>
+                  <h3>Observações</h3>
+                  <p>Anotações gerais sobre o tutor</p>
+                </div>
+              </div>
+              <div className="ct-form-field">
+                <textarea
+                  className="form-input ct-textarea"
+                  value={tutorForm.observacoes}
+                  onChange={e => setTutorForm({ ...tutorForm, observacoes: e.target.value })}
+                  placeholder="Digite observações sobre o tutor (ex: horários de preferência, restrições, informações adicionais...)"
+                  rows={6}
+                />
+              </div>
+            </>
+          )}
 
           <div className="ct-form-actions">
-            <button className="btn btn-outline" onClick={() => setView(editingTutorId && selectedTutor ? 'detail' : 'list')}>
-              Cancelar
-            </button>
+            <button className="btn btn-outline" onClick={() => setView(editingTutorId && selectedTutor ? 'detail' : 'list')}>Cancelar</button>
             <button className="btn btn-primary" onClick={handleSaveTutor} disabled={saving || !tutorForm.nome.trim()}>
               <Save size={18} /> {saving ? 'Salvando...' : 'Salvar Tutor'}
             </button>
@@ -354,29 +333,21 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
 
       {/* Tutor profile card */}
       <div className="ct-profile">
-        <div className="ct-profile-avatar">
-          {currentTutor?.nome?.charAt(0)?.toUpperCase()}
-        </div>
+        <div className="ct-profile-avatar">{currentTutor?.nome?.charAt(0)?.toUpperCase()}</div>
         <div className="ct-profile-info">
           <h2>{currentTutor?.nome}</h2>
           <div className="ct-profile-details">
-            <div className="ct-profile-item">
-              <CreditCard size={15} />
-              <span>{currentTutor?.cpf || 'CPF não informado'}</span>
-            </div>
-            <div className="ct-profile-item">
-              <Phone size={15} />
-              <span>{currentTutor?.telefone || 'Telefone não informado'}</span>
-            </div>
-            <div className="ct-profile-item">
-              <Mail size={15} />
-              <span>{currentTutor?.email || 'Email não informado'}</span>
-            </div>
-            <div className="ct-profile-item">
-              <MapPin size={15} />
-              <span>{currentTutor?.endereco || 'Endereço não informado'}</span>
-            </div>
+            <div className="ct-profile-item"><CreditCard size={15} /><span>{currentTutor?.cpf || 'CPF não informado'}</span></div>
+            <div className="ct-profile-item"><Phone size={15} /><span>{currentTutor?.telefone || 'Telefone não informado'}</span></div>
+            <div className="ct-profile-item"><Mail size={15} /><span>{currentTutor?.email || 'Email não informado'}</span></div>
+            <div className="ct-profile-item"><MapPin size={15} /><span>{currentTutor?.endereco || 'Endereço não informado'}</span></div>
           </div>
+          {currentTutor?.observacoes && (
+            <div className="ct-profile-obs">
+              <FileText size={14} />
+              <p>{currentTutor.observacoes}</p>
+            </div>
+          )}
         </div>
       </div>
 
@@ -424,6 +395,15 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
                 <input className="form-input" value={pacienteForm.raca} onChange={e => setPacienteForm({ ...pacienteForm, raca: e.target.value })} placeholder="Ex: Labrador" />
               </div>
               <div className="ct-form-field">
+                <label><Ruler size={14} /> Porte</label>
+                <select className="form-select" value={pacienteForm.porte} onChange={e => setPacienteForm({ ...pacienteForm, porte: e.target.value })}>
+                  <option value="">Selecione</option>
+                  <option value="Pequeno">Pequeno</option>
+                  <option value="Médio">Médio</option>
+                  <option value="Grande">Grande</option>
+                </select>
+              </div>
+              <div className="ct-form-field">
                 <label><Calendar size={14} /> Idade</label>
                 <input className="form-input" value={pacienteForm.idade} onChange={e => setPacienteForm({ ...pacienteForm, idade: e.target.value })} placeholder="Ex: 3 anos" />
               </div>
@@ -437,6 +417,25 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
               <div className="ct-form-field">
                 <label><Weight size={14} /> Peso (kg)</label>
                 <input className="form-input" type="number" step="0.1" value={pacienteForm.peso} onChange={e => setPacienteForm({ ...pacienteForm, peso: e.target.value })} placeholder="0.0" />
+              </div>
+              <div className="ct-form-field">
+                <label><PawPrint size={14} /> Pelagem</label>
+                <input className="form-input" value={pacienteForm.pelagem} onChange={e => setPacienteForm({ ...pacienteForm, pelagem: e.target.value })} placeholder="Ex: Curta, Lisa, Longa" />
+              </div>
+              <div className="ct-form-field">
+                <label><Scissors size={14} /> Castrado</label>
+                <select className="form-select" value={pacienteForm.castrado ? 'sim' : 'nao'} onChange={e => setPacienteForm({ ...pacienteForm, castrado: e.target.value === 'sim' })}>
+                  <option value="nao">Não</option>
+                  <option value="sim">Sim</option>
+                </select>
+              </div>
+              <div className="ct-form-field ct-form-full">
+                <label><AlertTriangle size={14} /> Alergias</label>
+                <input className="form-input" value={pacienteForm.alergias} onChange={e => setPacienteForm({ ...pacienteForm, alergias: e.target.value })} placeholder="Alergias conhecidas (ex: dipirona, pulga)" />
+              </div>
+              <div className="ct-form-field ct-form-full">
+                <label><FileText size={14} /> Doença Crônica</label>
+                <input className="form-input" value={pacienteForm.doenca_cronica} onChange={e => setPacienteForm({ ...pacienteForm, doenca_cronica: e.target.value })} placeholder="Doenças crônicas (ex: diabetes, cardiopatia)" />
               </div>
               <div className="ct-form-field ct-form-full">
                 <label><CreditCard size={14} /> Microchip</label>
@@ -454,9 +453,7 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
 
         {(!currentTutor?.pacientes || currentTutor.pacientes.length === 0) && !showPacienteForm ? (
           <div className="ct-empty" style={{ padding: 40 }}>
-            <div className="ct-empty-icon">
-              <PawPrint size={40} />
-            </div>
+            <div className="ct-empty-icon"><PawPrint size={40} /></div>
             <h3>Nenhum paciente cadastrado</h3>
             <p>Clique em "Adicionar Animal" para cadastrar o primeiro paciente</p>
           </div>
@@ -471,20 +468,25 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
                     <span className="ct-tag">{p.especie || 'N/A'}</span>
                     {p.raca && <span className="ct-tag">{p.raca}</span>}
                     {p.sexo && <span className="ct-tag">{p.sexo}</span>}
+                    {p.porte && <span className="ct-tag">{p.porte}</span>}
+                    {p.castrado && <span className="ct-tag ct-tag-castrado">Castrado</span>}
                   </div>
                   <div className="ct-animal-card-details">
                     {p.idade && <span><Calendar size={12} /> {p.idade}</span>}
                     {p.peso && <span><Weight size={12} /> {p.peso}kg</span>}
+                    {p.pelagem && <span><PawPrint size={12} /> {p.pelagem}</span>}
                     {p.microchip && <span><CreditCard size={12} /> {p.microchip}</span>}
                   </div>
+                  {(p.alergias || p.doenca_cronica) && (
+                    <div className="ct-animal-card-alerts">
+                      {p.alergias && <span className="ct-alert-tag"><AlertTriangle size={11} /> {p.alergias}</span>}
+                      {p.doenca_cronica && <span className="ct-alert-tag chronic"><FileText size={11} /> {p.doenca_cronica}</span>}
+                    </div>
+                  )}
                 </div>
                 <div className="ct-animal-card-actions">
-                  <button className="btn-icon" title="Editar" onClick={() => handleEditPaciente(p)}>
-                    <Edit2 size={14} />
-                  </button>
-                  <button className="btn-icon danger" title="Excluir" onClick={() => handleDeletePaciente(p.id)}>
-                    <Trash2 size={14} />
-                  </button>
+                  <button className="btn-icon" title="Editar" onClick={() => handleEditPaciente(p)}><Edit2 size={14} /></button>
+                  <button className="btn-icon danger" title="Excluir" onClick={() => handleDeletePaciente(p.id)}><Trash2 size={14} /></button>
                 </div>
               </div>
             ))}
