@@ -1,4 +1,4 @@
-import { LayoutDashboard, FileText, Hospital, LogOut, History, Users, X } from 'lucide-react';
+import { LayoutDashboard, FileText, Hospital, LogOut, History, Users, X, Settings } from 'lucide-react';
 
 export default function Sidebar({ currentPage, onNavigate, user, onLogout, isOpen, onClose }) {
   const menuItems = [
