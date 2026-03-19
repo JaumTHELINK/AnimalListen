@@ -9,7 +9,7 @@ import { generateProntuarioNumber } from '../../data/mockData';
 import { useTutores } from '../../hooks/useTutores';
 import { useProntuarios } from '../../hooks/useProntuarios';
 
-export default function Prontuario({ prontuario, onBack, onSave }) {
+export default function Prontuario({ prontuario, onBack, onSave, onSelectProntuario, onDeleteProntuario }) {
   const { tutores, isLoading: tutoresLoading } = useTutores();
   const { prontuarios: allProntuarios } = useProntuarios();
   const [selectedTutorId, setSelectedTutorId] = useState('');
