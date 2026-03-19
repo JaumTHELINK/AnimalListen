@@ -77,6 +77,45 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
     }
   }, [prontuario]);
 
+  // Derived: selected tutor's patients
+  const selectedTutor = tutores.find((t) => t.id === selectedTutorId);
+  const pacientesDoTutor = selectedTutor?.pacientes || [];
+
+  const handleSelectTutor = (tutorId) => {
+    setSelectedTutorId(tutorId);
+    setSelectedPacienteId('');
+    const tutor = tutores.find((t) => t.id === tutorId);
+    if (tutor) {
+      setForm((prev) => ({
+        ...prev,
+        tutor_nome: tutor.nome || '',
+        tutor_cpf: tutor.cpf || '',
+        tutor_telefone: tutor.telefone || '',
+        tutor_email: tutor.email || '',
+        tutor_endereco: tutor.endereco || '',
+        animal_nome: '', animal_especie: '', animal_raca: '', animal_idade: '',
+        animal_sexo: '', animal_peso: '', animal_microchip: '',
+      }));
+    }
+  };
+
+  const handleSelectPaciente = (pacienteId) => {
+    setSelectedPacienteId(pacienteId);
+    const paciente = pacientesDoTutor.find((p) => p.id === pacienteId);
+    if (paciente) {
+      setForm((prev) => ({
+        ...prev,
+        animal_nome: paciente.nome || '',
+        animal_especie: paciente.especie || '',
+        animal_raca: paciente.raca || '',
+        animal_idade: paciente.idade || '',
+        animal_sexo: paciente.sexo || '',
+        animal_peso: paciente.peso || '',
+        animal_microchip: paciente.microchip || '',
+      }));
+    }
+  };
+
   const handleChange = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
