@@ -2,12 +2,16 @@ import { useState, useEffect, useRef } from 'react';
 import {
   User, PawPrint, ClipboardList, Stethoscope, Pill, MessageSquare,
   Save, ArrowLeft, Edit, Lock, X, Printer, Activity, FileText, Sparkles,
-  Cpu, Upload, Palette,
+  Cpu, Upload, Palette, ChevronDown,
 } from 'lucide-react';
 import AudioUpload from './AudioUpload';
 import { generateProntuarioNumber } from '../../data/mockData';
+import { useTutores } from '../../hooks/useTutores';
 
 export default function Prontuario({ prontuario, onBack, onSave }) {
+  const { tutores, isLoading: tutoresLoading } = useTutores();
+  const [selectedTutorId, setSelectedTutorId] = useState('');
+  const [selectedPacienteId, setSelectedPacienteId] = useState('');
   const [editMode, setEditMode] = useState(!prontuario);
   const [prontuarioType, setProntuarioType] = useState('personalizado'); // 'personalizado' | 'simples'
   const [customColor, setCustomColor] = useState('#0855a1');
