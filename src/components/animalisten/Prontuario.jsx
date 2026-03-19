@@ -406,15 +406,9 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
             <Trash2 size={14} />
             <span className="btn-label">Cancelar</span>
           </button>
-          {prontuario?.status === 'incompleto' && (
-            <button className="btn btn-sm" onClick={handleFinalize} style={{ background: '#16a34a', color: 'white', border: 'none' }}>
-              <CheckCircle size={14} />
-              <span className="btn-label">Finalizar</span>
-            </button>
-          )}
-          <button className="btn btn-primary btn-sm" onClick={() => handleSave('completo')}>
-            <Save size={14} />
-            {saved ? '✓ Salvo!' : 'Salvar'}
+          <button className="btn btn-sm" onClick={handleFinalize} style={{ background: '#16a34a', color: 'white', border: 'none' }}>
+            <CheckCircle size={14} />
+            <span className="btn-label">Finalizar</span>
           </button>
         </div>
       </div>
