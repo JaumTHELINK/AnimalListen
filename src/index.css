@@ -1719,64 +1719,285 @@ body {
     display: none !important;
   }
 
-  body {
-    background: white;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  html, body {
+    background: white !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+    color: #1a1a1a !important;
   }
 
   .main-content {
-    margin-left: 0;
-    padding: 0;
+    margin-left: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
   }
 
   .pront-layout {
-    display: block;
+    display: block !important;
   }
 
   .pront-document {
-    border: none;
-    box-shadow: none;
-    border-radius: 0;
+    border: 2px solid #333 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
   }
 
   .pront-doc-header {
-    background: var(--primary) !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-    padding: 16px 24px;
+    background: #0855a1 !important;
+    color: white !important;
+    padding: 20px 28px !important;
+    border-radius: 0 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
   }
 
-  .pront-section {
-    padding: 16px 24px;
-    page-break-inside: avoid;
+  .pront-doc-header h1 {
+    font-size: 16pt !important;
+    color: white !important;
+    margin: 0 !important;
+    letter-spacing: 0.5px;
+  }
+
+  .pront-doc-subtitle {
+    color: rgba(255,255,255,0.85) !important;
+    font-size: 9pt !important;
+  }
+
+  .pront-doc-meta {
+    display: flex !important;
+    gap: 20px !important;
+  }
+
+  .pront-doc-meta-item {
+    text-align: right !important;
+  }
+
+  .pront-doc-meta-label {
+    font-size: 7pt !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    color: rgba(255,255,255,0.7) !important;
+    display: block !important;
+  }
+
+  .pront-doc-meta-value {
+    font-size: 10pt !important;
+    font-weight: 700 !important;
+    color: white !important;
   }
 
   .pront-doc-divider {
-    margin: 0 24px;
+    margin: 0 !important;
+    border-top: 1px solid #ddd !important;
   }
 
-  .pront-input {
-    border-bottom-color: #ccc;
+  .pront-section {
+    padding: 14px 28px !important;
+    page-break-inside: avoid !important;
+  }
+
+  .pront-section-header,
+  .pront-section-header--simple {
+    margin-bottom: 10px !important;
+    padding-bottom: 4px !important;
+    border-bottom: 2px solid #0855a1 !important;
+  }
+
+  .pront-section-header h3 {
+    font-size: 11pt !important;
+    font-weight: 700 !important;
+    color: #0855a1 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .pront-section-header svg {
+    color: #0855a1 !important;
+  }
+
+  .pront-field {
+    margin-bottom: 6px !important;
+  }
+
+  .pront-label {
+    font-size: 7.5pt !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    color: #666 !important;
+    font-weight: 600 !important;
+    margin-bottom: 1px !important;
+  }
+
+  .pront-input,
+  .pront-textarea,
+  .pront-select {
+    border: none !important;
+    border-bottom: 1px solid #ccc !important;
+    background: transparent !important;
+    padding: 2px 0 !important;
+    font-size: 10pt !important;
+    color: #1a1a1a !important;
+    min-height: auto !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .pront-textarea {
+    border: 1px solid #ccc !important;
+    padding: 4px 6px !important;
+    border-radius: 2px !important;
+  }
+
+  .pront-grid-2 {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+  }
+
+  .pront-grid-3 {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 12px !important;
+  }
+
+  .pront-grid-4 {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .pront-vitals {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 10px !important;
+    margin-bottom: 10px !important;
   }
 
   .pront-vital-card {
-    border: 1px solid #ccc;
+    border: 1.5px solid #0855a1 !important;
+    border-radius: 4px !important;
+    padding: 8px !important;
+    text-align: center !important;
+    background: #f0f6ff !important;
   }
 
-  .pront-footer {
-    padding: 24px;
-    page-break-inside: avoid;
+  .pront-vital-label {
+    font-size: 7pt !important;
+    text-transform: uppercase !important;
+    color: #0855a1 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .pront-vital-input {
+    font-size: 13pt !important;
+    font-weight: 700 !important;
+    color: #1a1a1a !important;
+    border: none !important;
+    background: transparent !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  .pront-vital-unit {
+    font-size: 8pt !important;
+    color: #666 !important;
+  }
+
+  .pront-tags {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
   }
 
   .tag {
     border: 1px solid #999 !important;
+    background: #f5f5f5 !important;
+    font-size: 8.5pt !important;
+    padding: 2px 8px !important;
+    border-radius: 3px !important;
+    color: #333 !important;
+  }
+
+  .tag-remove {
+    display: none !important;
+  }
+
+  .pront-empty {
+    font-size: 9pt !important;
+    color: #999 !important;
+    font-style: italic !important;
   }
 
   .ai-badge,
   .ai-filled {
     border-left: none !important;
     background: none !important;
+  }
+
+  .ai-badge {
+    display: none !important;
+  }
+
+  .pront-footer {
+    padding: 20px 28px !important;
+    background: #f8f8f8 !important;
+    border-top: 2px solid #333 !important;
+    page-break-inside: avoid !important;
+    margin-top: 10px !important;
+  }
+
+  .pront-signature {
+    text-align: center !important;
+    margin-bottom: 16px !important;
+    padding-top: 40px !important;
+  }
+
+  .pront-signature-line {
+    width: 320px !important;
+    margin: 0 auto 6px !important;
+    border-bottom: 1px solid #333 !important;
+  }
+
+  .pront-signature span {
+    font-size: 9pt !important;
+    color: #333 !important;
+  }
+
+  .pront-signature-crmv {
+    font-size: 8pt !important;
+    color: #666 !important;
+  }
+
+  .pront-footer-info {
+    display: flex !important;
+    justify-content: space-between !important;
+    font-size: 7.5pt !important;
+    color: #999 !important;
+    border-top: 1px solid #ddd !important;
+    padding-top: 8px !important;
+  }
+
+  /* Hide select dropdowns, show only value */
+  select.pront-select option {
+    display: none !important;
+  }
+
+  /* Page settings */
+  @page {
+    margin: 10mm 8mm;
+    size: A4;
   }
 }
 
