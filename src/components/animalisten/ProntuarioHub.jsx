@@ -70,17 +70,6 @@ export default function ProntuarioHub({ prontuarios, onNavigate, onSelectProntua
             <div className="stat-label">Histórico</div>
           </div>
         </div>
-        <div
-          className="stat-card card-clickable"
-          onClick={() => setTab('cancelados')}
-          style={tab === 'cancelados' ? { borderColor: '#dc2626', borderWidth: '2px' } : {}}
-        >
-          <div className="stat-icon" style={{ background: '#fef2f2', color: '#dc2626' }}><XCircle size={22} /></div>
-          <div>
-            <div className="stat-value">{cancelados.length}</div>
-            <div className="stat-label">Cancelados</div>
-          </div>
-        </div>
       </div>
 
       {/* Search */}
