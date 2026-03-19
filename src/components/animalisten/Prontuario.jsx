@@ -11,6 +11,7 @@ import { useProntuarios } from '../../hooks/useProntuarios';
 
 export default function Prontuario({ prontuario, onBack, onSave }) {
   const { tutores, isLoading: tutoresLoading } = useTutores();
+  const { prontuarios: allProntuarios } = useProntuarios();
   const [selectedTutorId, setSelectedTutorId] = useState('');
   const [selectedPacienteId, setSelectedPacienteId] = useState('');
   const [editMode, setEditMode] = useState(!prontuario);
