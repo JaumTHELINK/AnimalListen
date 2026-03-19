@@ -506,7 +506,8 @@ body {
 .form-textarea:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px var(--primary-50);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px var(--primary-50), inset 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .form-input:disabled,
