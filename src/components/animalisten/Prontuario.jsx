@@ -119,6 +119,11 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
         animal_sexo: paciente.sexo || '',
         animal_peso: paciente.peso || '',
         animal_microchip: paciente.microchip || '',
+        animal_porte: paciente.porte || '',
+        animal_pelagem: paciente.pelagem || '',
+        animal_alergias: paciente.alergias || '',
+        animal_doenca_cronica: paciente.doenca_cronica || '',
+        animal_castrado: paciente.castrado || false,
       }));
     }
   };
