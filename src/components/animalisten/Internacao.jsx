@@ -6,7 +6,10 @@ import {
 import { statusLabels, statusClasses, tipoRegistroLabels } from '../../data/mockData';
 import InternacaoDetalhes from './InternacaoDetalhes';
 
-export default function Internacao({ internacoes, setInternacoes }) {
+export default function Internacao({
+  internacoes, onAddInternacao, onUpdateStatus, onUpdatePaciente,
+  onAddRegistro, onUpdateRegistro, onDeleteRegistro
+}) {
   const [selectedId, setSelectedId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [newForm, setNewForm] = useState({
@@ -29,16 +32,14 @@ export default function Internacao({ internacoes, setInternacoes }) {
     }
   };
 
-  const handleAddInternacao = () => {
+  const handleAddInternacao = async () => {
     const nova = {
-      id: Date.now(),
       ...newForm,
       animal_peso: parseFloat(newForm.animal_peso) || 0,
       data_internacao: new Date().toISOString(),
       status: 'observacao',
-      registros: [],
     };
-    setInternacoes([nova, ...internacoes]);
+    await onAddInternacao(nova);
     setNewForm({
       animal_nome: '', animal_especie: '', animal_raca: '', animal_idade: '',
       animal_peso: '', animal_microchip: '', tutor_nome: '', tutor_cpf: '', tutor_telefone: '',
@@ -47,50 +48,28 @@ export default function Internacao({ internacoes, setInternacoes }) {
     setShowModal(false);
   };
 
-  const handleAddRegistro = (internacaoId, registro) => {
-    setInternacoes((prev) =>
-      prev.map((i) =>
-        i.id === internacaoId
-          ? { ...i, registros: [...i.registros, { id: Date.now(), ...registro }] }
-          : i
-      )
-    );
+  const handleAddRegistro = async (internacaoId, registro) => {
+    await onAddRegistro({ internacao_id: internacaoId, registro });
   };
 
-  const handleUpdateRegistro = (internacaoId, registroId, updated) => {
-    setInternacoes((prev) =>
-      prev.map((i) =>
-        i.id === internacaoId
-          ? { ...i, registros: i.registros.map((r) => r.id === registroId ? { ...r, ...updated } : r) }
-          : i
-      )
-    );
+  const handleUpdateRegistro = async (internacaoId, registroId, updated) => {
+    await onUpdateRegistro({ id: registroId, updates: updated });
   };
 
-  const handleDeleteRegistro = (internacaoId, registroId) => {
-    setInternacoes((prev) =>
-      prev.map((i) =>
-        i.id === internacaoId
-          ? { ...i, registros: i.registros.filter((r) => r.id !== registroId) }
-          : i
-      )
-    );
+  const handleDeleteRegistro = async (internacaoId, registroId) => {
+    await onDeleteRegistro(registroId);
   };
 
-  const handleUpdateStatus = (internacaoId, newStatus) => {
-    setInternacoes((prev) =>
-      prev.map((i) => (i.id === internacaoId ? { ...i, status: newStatus } : i))
-    );
+  const handleUpdateStatus = async (internacaoId, newStatus) => {
+    await onUpdateStatus({ id: internacaoId, status: newStatus });
   };
 
-  const handleUpdatePaciente = (internacaoId, data) => {
-    setInternacoes((prev) =>
-      prev.map((i) => (i.id === internacaoId ? { ...i, ...data } : i))
-    );
+  const handleUpdatePaciente = async (internacaoId, data) => {
+    await onUpdatePaciente({ id: internacaoId, data });
   };
 
   const getLastReading = (registros, tipo) => {
-    const items = registros.filter((r) => r.tipo === tipo);
+    const items = (registros || []).filter((r) => r.tipo === tipo);
     return items.length > 0 ? items[items.length - 1] : null;
   };
 
@@ -243,7 +222,7 @@ export default function Internacao({ internacoes, setInternacoes }) {
                   Internado em {new Date(intern.data_internacao).toLocaleDateString('pt-BR')}
                 </span>
                 <span className="text-xs font-bold" style={{ color: 'var(--primary)' }}>
-                  {intern.registros.length} registros →
+                  {(intern.registros || []).length} registros →
                 </span>
               </div>
             </div>
