@@ -3,7 +3,7 @@ import {
   Hospital, Plus, Heart, Thermometer, UtensilsCrossed, Pill,
   Droplets, FileText, PawPrint, Clock, AlertTriangle, Eye, X, Camera
 } from 'lucide-react';
-import { statusLabels, statusClasses, tipoRegistroLabels } from '../data/mockData';
+import { statusLabels, statusClasses, tipoRegistroLabels } from '../../data/mockData';
 import InternacaoDetalhes from './InternacaoDetalhes';
 
 export default function Internacao({ internacoes, setInternacoes }) {

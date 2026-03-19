@@ -3,7 +3,7 @@ import {
   ArrowLeft, Plus, Heart, Thermometer, UtensilsCrossed, Pill,
   Droplets, FileText, PawPrint, Clock, X, Activity, Edit, Trash2, Check, Camera,
 } from 'lucide-react';
-import { statusLabels, statusClasses, tipoRegistroLabels } from '../data/mockData';
+import { statusLabels, statusClasses, tipoRegistroLabels } from '../../data/mockData';
 
 const iconComponents = {
   bpm: Heart,

@@ -5,7 +5,7 @@ import {
   Cpu, Upload, Palette,
 } from 'lucide-react';
 import AudioUpload from './AudioUpload';
-import { generateProntuarioNumber } from '../data/mockData';
+import { generateProntuarioNumber } from '../../data/mockData';
 
 export default function Prontuario({ prontuario, onBack, onSave }) {
   const [editMode, setEditMode] = useState(!prontuario);
