@@ -124,6 +124,8 @@ function Index() {
               setCurrentPage('prontuario-hub');
             }}
             onSave={handleSaveProntuario}
+            onSelectProntuario={handleSelectProntuario}
+            onDeleteProntuario={deleteProntuario}
           />
         );
       case 'internacao':
