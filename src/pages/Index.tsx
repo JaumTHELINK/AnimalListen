@@ -5,7 +5,8 @@ import Dashboard from '../components/animalisten/Dashboard';
 import Prontuario from '../components/animalisten/Prontuario';
 import Internacao from '../components/animalisten/Internacao';
 import HistoricoPaciente from '../components/animalisten/HistoricoPaciente';
-import { mockProntuarios, mockInternacoes } from '../data/mockData';
+import { useProntuarios } from '../hooks/useProntuarios';
+import { useInternacoes } from '../hooks/useInternacoes';
 
 function Index() {
   const [user, setUser] = useState(null);
@@ -13,8 +14,22 @@ function Index() {
   const [selectedProntuario, setSelectedProntuario] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const [prontuarios, setProntuarios] = useState(mockProntuarios);
-  const [internacoes, setInternacoes] = useState(mockInternacoes);
+  const {
+    prontuarios,
+    isLoading: loadingProntuarios,
+    saveProntuario,
+  } = useProntuarios();
+
+  const {
+    internacoes,
+    isLoading: loadingInternacoes,
+    addInternacao,
+    updateStatus,
+    updatePaciente,
+    addRegistro,
+    updateRegistro,
+    deleteRegistro,
+  } = useInternacoes();
 
   const handleLogin = (userData) => {
     setUser(userData);
@@ -38,21 +53,26 @@ function Index() {
     setSidebarOpen(false);
   };
 
-  const handleSaveProntuario = (updatedProntuario) => {
-    setProntuarios((prev) => {
-      const exists = prev.find((p) => p.id === updatedProntuario.id);
-      if (exists) {
-        return prev.map((p) => (p.id === updatedProntuario.id ? updatedProntuario : p));
-      }
-      return [updatedProntuario, ...prev];
-    });
+  const handleSaveProntuario = async (prontuarioData) => {
+    await saveProntuario(prontuarioData);
   };
 
   if (!user) {
     return <Login onLogin={handleLogin} />;
   }
 
+  const isLoading = loadingProntuarios || loadingInternacoes;
+
   const renderPage = () => {
+    if (isLoading) {
+      return (
+        <div className="empty-state">
+          <div className="spinner" />
+          <p>Carregando dados...</p>
+        </div>
+      );
+    }
+
     switch (currentPage) {
       case 'dashboard':
         return (
@@ -77,7 +97,12 @@ function Index() {
         return (
           <Internacao
             internacoes={internacoes}
-            setInternacoes={setInternacoes}
+            onAddInternacao={addInternacao}
+            onUpdateStatus={updateStatus}
+            onUpdatePaciente={updatePaciente}
+            onAddRegistro={addRegistro}
+            onUpdateRegistro={updateRegistro}
+            onDeleteRegistro={deleteRegistro}
           />
         );
       case 'historico':
