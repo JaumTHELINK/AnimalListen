@@ -26,6 +26,7 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
     tutor_nome: '', tutor_cpf: '', tutor_telefone: '', tutor_email: '', tutor_endereco: '',
     animal_nome: '', animal_especie: '', animal_raca: '', animal_idade: '', animal_sexo: '',
     animal_peso: '', animal_microchip: '',
+    animal_porte: '', animal_pelagem: '', animal_alergias: '', animal_doenca_cronica: '', animal_castrado: false,
     queixa_principal: '', historico_doenca: '',
     temperatura: '', frequencia_cardiaca: '', frequencia_respiratoria: '', mucosas: '', palpacao_abdominal: '',
     suspeita_diagnostica: '', tratamento_prescrito: '',
@@ -58,6 +59,11 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
         animal_sexo: prontuario.animal_sexo || '',
         animal_peso: prontuario.animal_peso || '',
         animal_microchip: prontuario.animal_microchip || '',
+        animal_porte: prontuario.animal_porte || '',
+        animal_pelagem: prontuario.animal_pelagem || '',
+        animal_alergias: prontuario.animal_alergias || '',
+        animal_doenca_cronica: prontuario.animal_doenca_cronica || '',
+        animal_castrado: prontuario.animal_castrado ? 'Sim' : 'Não',
         queixa_principal: prontuario.queixa_principal || '',
         historico_doenca: prontuario.historico_doenca || '',
         temperatura: prontuario.temperatura || '',
@@ -95,6 +101,7 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
         tutor_endereco: tutor.endereco || '',
         animal_nome: '', animal_especie: '', animal_raca: '', animal_idade: '',
         animal_sexo: '', animal_peso: '', animal_microchip: '',
+        animal_porte: '', animal_pelagem: '', animal_alergias: '', animal_doenca_cronica: '', animal_castrado: false,
       }));
     }
   };
@@ -112,6 +119,11 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
         animal_sexo: paciente.sexo || '',
         animal_peso: paciente.peso || '',
         animal_microchip: paciente.microchip || '',
+        animal_porte: paciente.porte || '',
+        animal_pelagem: paciente.pelagem || '',
+        animal_alergias: paciente.alergias || '',
+        animal_doenca_cronica: paciente.doenca_cronica || '',
+        animal_castrado: paciente.castrado ? 'Sim' : 'Não',
       }));
     }
   };
@@ -136,6 +148,7 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
     numero_prontuario: numeroProntuario,
     ...form,
     animal_peso: form.animal_peso ? parseFloat(form.animal_peso) : null,
+    animal_castrado: form.animal_castrado === 'Sim' || form.animal_castrado === true,
     temperatura: form.temperatura ? parseFloat(form.temperatura) : null,
     frequencia_cardiaca: form.frequencia_cardiaca ? parseInt(form.frequencia_cardiaca) : null,
     frequencia_respiratoria: form.frequencia_respiratoria ? parseInt(form.frequencia_respiratoria) : null,
@@ -586,11 +599,18 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
             </div>
             <div className="pront-grid-4">
               {renderField('Idade', 'animal_idade')}
-              {renderField('Sexo', 'animal_sexo', 'select', { options: ['Macho', 'Fêmea', 'Macho Castrado', 'Fêmea Castrada'] })}
+              {renderField('Sexo', 'animal_sexo', 'select', { options: ['Macho', 'Fêmea'] })}
               {renderField('Peso (kg)', 'animal_peso', 'number', { step: '0.1' })}
+              {renderField('Porte', 'animal_porte', 'select', { options: ['Pequeno', 'Médio', 'Grande'] })}
+            </div>
+            <div className="pront-grid-3">
+              {renderField('Pelagem', 'animal_pelagem')}
+              {renderField('Microchip', 'animal_microchip')}
+              {renderField('Castrado', 'animal_castrado', 'select', { options: ['Sim', 'Não'] })}
             </div>
             <div className="pront-grid-2">
-              {renderField('Microchip', 'animal_microchip')}
+              {renderField('Alergias', 'animal_alergias', 'textarea', { rows: 2 })}
+              {renderField('Doença Crônica', 'animal_doenca_cronica', 'textarea', { rows: 2 })}
             </div>
           </div>
 

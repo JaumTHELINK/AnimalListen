@@ -173,11 +173,16 @@ export type Database = {
       }
       prontuarios: {
         Row: {
+          animal_alergias: string | null
+          animal_castrado: boolean | null
+          animal_doenca_cronica: string | null
           animal_especie: string | null
           animal_idade: string | null
           animal_microchip: string | null
           animal_nome: string | null
+          animal_pelagem: string | null
           animal_peso: number | null
+          animal_porte: string | null
           animal_raca: string | null
           animal_sexo: string | null
           comportamento: string[] | null
@@ -207,11 +212,16 @@ export type Database = {
           tutor_telefone: string | null
         }
         Insert: {
+          animal_alergias?: string | null
+          animal_castrado?: boolean | null
+          animal_doenca_cronica?: string | null
           animal_especie?: string | null
           animal_idade?: string | null
           animal_microchip?: string | null
           animal_nome?: string | null
+          animal_pelagem?: string | null
           animal_peso?: number | null
+          animal_porte?: string | null
           animal_raca?: string | null
           animal_sexo?: string | null
           comportamento?: string[] | null
@@ -241,11 +251,16 @@ export type Database = {
           tutor_telefone?: string | null
         }
         Update: {
+          animal_alergias?: string | null
+          animal_castrado?: boolean | null
+          animal_doenca_cronica?: string | null
           animal_especie?: string | null
           animal_idade?: string | null
           animal_microchip?: string | null
           animal_nome?: string | null
+          animal_pelagem?: string | null
           animal_peso?: number | null
+          animal_porte?: string | null
           animal_raca?: string | null
           animal_sexo?: string | null
           comportamento?: string[] | null
