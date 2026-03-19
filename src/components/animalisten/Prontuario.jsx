@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import {
   User, PawPrint, ClipboardList, Stethoscope, Pill, MessageSquare,
   Save, ArrowLeft, Edit, Lock, X, Printer, Activity, FileText, Sparkles,
-  Cpu, Upload, Palette, ChevronDown, Clock,
+  Cpu, Upload, Palette, ChevronDown, Clock, CheckCircle, Trash2,
 } from 'lucide-react';
 import AudioUpload from './AudioUpload';
 import { generateProntuarioNumber } from '../../data/mockData';
@@ -155,6 +155,26 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
       setTimeout(() => setSaved(false), 2500);
     } catch (err) {
       console.error('Erro ao salvar prontuário:', err);
+    }
+  };
+
+  const handleCancel = async () => {
+    if (!window.confirm('Tem certeza que deseja cancelar este prontuário? Esta ação não pode ser desfeita.')) return;
+    const fullData = buildFullData('cancelado');
+    try {
+      if (onSave) await onSave(fullData);
+    } catch (err) {
+      console.error('Erro ao cancelar prontuário:', err);
+    }
+  };
+
+  const handleFinalize = async () => {
+    if (!window.confirm('Deseja finalizar este prontuário e enviá-lo ao histórico?')) return;
+    const fullData = buildFullData('completo');
+    try {
+      if (onSave) await onSave(fullData);
+    } catch (err) {
+      console.error('Erro ao finalizar prontuário:', err);
     }
   };
 
@@ -382,6 +402,16 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
             <Clock size={14} />
             <span className="btn-label">Salvar Incompleto</span>
           </button>
+          <button className="btn btn-outline btn-sm" onClick={handleCancel} style={{ borderColor: '#dc2626', color: '#dc2626' }}>
+            <Trash2 size={14} />
+            <span className="btn-label">Cancelar</span>
+          </button>
+          {prontuario?.status === 'incompleto' && (
+            <button className="btn btn-sm" onClick={handleFinalize} style={{ background: '#16a34a', color: 'white', border: 'none' }}>
+              <CheckCircle size={14} />
+              <span className="btn-label">Finalizar</span>
+            </button>
+          )}
           <button className="btn btn-primary btn-sm" onClick={() => handleSave('completo')}>
             <Save size={14} />
             {saved ? '✓ Salvo!' : 'Salvar'}

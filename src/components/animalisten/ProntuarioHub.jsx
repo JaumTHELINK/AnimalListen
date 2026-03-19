@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import { Plus, Clock, History, FileText, PawPrint, ChevronRight, Search, AlertCircle } from 'lucide-react';
+import { Plus, Clock, History, FileText, PawPrint, ChevronRight, Search, AlertCircle, XCircle } from 'lucide-react';
 
 export default function ProntuarioHub({ prontuarios, onNavigate, onSelectProntuario }) {
   const [search, setSearch] = useState('');
 
   const abertos = prontuarios.filter((p) => p.status === 'incompleto');
-  const completos = prontuarios.filter((p) => p.status !== 'incompleto');
+  const completos = prontuarios.filter((p) => p.status === 'completo');
+  const cancelados = prontuarios.filter((p) => p.status === 'cancelado');
 
   const [tab, setTab] = useState('abertos');
 
-  const list = tab === 'abertos' ? abertos : completos;
+  const list = tab === 'abertos' ? abertos : tab === 'cancelados' ? cancelados : completos;
 
   const filtered = list.filter((p) => {
     const term = search.toLowerCase();
@@ -69,6 +70,17 @@ export default function ProntuarioHub({ prontuarios, onNavigate, onSelectProntua
             <div className="stat-label">Histórico</div>
           </div>
         </div>
+        <div
+          className="stat-card card-clickable"
+          onClick={() => setTab('cancelados')}
+          style={tab === 'cancelados' ? { borderColor: '#dc2626', borderWidth: '2px' } : {}}
+        >
+          <div className="stat-icon" style={{ background: '#fef2f2', color: '#dc2626' }}><XCircle size={22} /></div>
+          <div>
+            <div className="stat-value">{cancelados.length}</div>
+            <div className="stat-label">Cancelados</div>
+          </div>
+        </div>
       </div>
 
       {/* Search */}
@@ -90,6 +102,8 @@ export default function ProntuarioHub({ prontuarios, onNavigate, onSelectProntua
       <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
         {tab === 'abertos' ? (
           <><Clock size={16} /> Prontuários em Aberto</>
+        ) : tab === 'cancelados' ? (
+          <><XCircle size={16} style={{ color: '#dc2626' }} /> Prontuários Cancelados</>
         ) : (
           <><History size={16} /> Histórico de Prontuários</>
         )}
