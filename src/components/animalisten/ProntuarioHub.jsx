@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Plus, Clock, History, FileText, PawPrint, ChevronRight, Search, AlertCircle } from 'lucide-react';
+import { Plus, Clock, History, FileText, PawPrint, ChevronRight, Search, AlertCircle, XCircle } from 'lucide-react';
 
 export default function ProntuarioHub({ prontuarios, onNavigate, onSelectProntuario }) {
   const [search, setSearch] = useState('');
