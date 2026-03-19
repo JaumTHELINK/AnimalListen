@@ -10,7 +10,7 @@ const emptyPaciente = {
 };
 
 export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onSavePaciente, onDeletePaciente }) {
-  const [view, setView] = useState('list'); // list | form | detail
+  const [view, setView] = useState('list');
   const [tutorForm, setTutorForm] = useState(emptyTutor);
   const [editingTutorId, setEditingTutorId] = useState(null);
   const [selectedTutor, setSelectedTutor] = useState(null);
@@ -81,7 +81,6 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
       setPacienteForm(emptyPaciente);
       setShowPacienteForm(false);
       setEditingPacienteId(null);
-      // Refresh selected tutor from list
       setTimeout(() => {
         const updated = tutores.find(t => t.id === selectedTutor.id);
         if (updated) setSelectedTutor(updated);
@@ -123,7 +122,6 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
     setEditingPacienteId(null);
   };
 
-  // Keep selectedTutor synced
   const currentTutor = selectedTutor ? tutores.find(t => t.id === selectedTutor.id) || selectedTutor : null;
 
   // ─── LIST VIEW ───
@@ -135,18 +133,20 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
             <h2><User size={24} /> Cadastro de Tutores</h2>
             <p className="subtitle">{tutores.length} tutor(es) cadastrado(s)</p>
           </div>
-          <button className="btn-primary" onClick={() => { setTutorForm(emptyTutor); setEditingTutorId(null); setView('form'); }}>
+          <button className="btn btn-primary" onClick={() => { setTutorForm(emptyTutor); setEditingTutorId(null); setView('form'); }}>
             <Plus size={18} /> Novo Tutor
           </button>
         </div>
 
-        <div className="search-bar" style={{ marginBottom: 16 }}>
+        <div className="search-bar">
           <Search size={18} />
           <input
             type="text"
+            className="form-input"
             placeholder="Buscar por nome, CPF ou telefone..."
             value={search}
             onChange={e => setSearch(e.target.value)}
+            style={{ border: 'none', boxShadow: 'none' }}
           />
         </div>
 
@@ -223,34 +223,34 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
           <h2>{editingTutorId ? 'Editar Tutor' : 'Novo Tutor'}</h2>
         </div>
 
-        <div className="form-card">
-          <h3><User size={18} /> Dados do Tutor</h3>
-          <div className="form-grid">
-            <div className="form-group full-width">
-              <label>Nome Completo *</label>
-              <input value={tutorForm.nome} onChange={e => setTutorForm({ ...tutorForm, nome: e.target.value })} placeholder="Nome do tutor" />
+        <div className="card">
+          <h3 className="card-section-title"><User size={18} /> Dados do Tutor</h3>
+          <div className="form-row">
+            <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+              <label className="form-label">Nome Completo *</label>
+              <input className="form-input" value={tutorForm.nome} onChange={e => setTutorForm({ ...tutorForm, nome: e.target.value })} placeholder="Nome do tutor" />
             </div>
             <div className="form-group">
-              <label>CPF</label>
-              <input value={tutorForm.cpf} onChange={e => setTutorForm({ ...tutorForm, cpf: e.target.value })} placeholder="000.000.000-00" />
+              <label className="form-label">CPF</label>
+              <input className="form-input" value={tutorForm.cpf} onChange={e => setTutorForm({ ...tutorForm, cpf: e.target.value })} placeholder="000.000.000-00" />
             </div>
             <div className="form-group">
-              <label>Telefone</label>
-              <input value={tutorForm.telefone} onChange={e => setTutorForm({ ...tutorForm, telefone: e.target.value })} placeholder="(00) 00000-0000" />
+              <label className="form-label">Telefone</label>
+              <input className="form-input" value={tutorForm.telefone} onChange={e => setTutorForm({ ...tutorForm, telefone: e.target.value })} placeholder="(00) 00000-0000" />
             </div>
             <div className="form-group">
-              <label>Email</label>
-              <input type="email" value={tutorForm.email} onChange={e => setTutorForm({ ...tutorForm, email: e.target.value })} placeholder="email@exemplo.com" />
+              <label className="form-label">Email</label>
+              <input className="form-input" type="email" value={tutorForm.email} onChange={e => setTutorForm({ ...tutorForm, email: e.target.value })} placeholder="email@exemplo.com" />
             </div>
-            <div className="form-group full-width">
-              <label>Endereço</label>
-              <input value={tutorForm.endereco} onChange={e => setTutorForm({ ...tutorForm, endereco: e.target.value })} placeholder="Endereço completo" />
+            <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+              <label className="form-label">Endereço</label>
+              <input className="form-input" value={tutorForm.endereco} onChange={e => setTutorForm({ ...tutorForm, endereco: e.target.value })} placeholder="Endereço completo" />
             </div>
           </div>
 
           <div className="form-actions">
-            <button className="btn-secondary" onClick={() => setView(editingTutorId && selectedTutor ? 'detail' : 'list')}>Cancelar</button>
-            <button className="btn-primary" onClick={handleSaveTutor} disabled={saving || !tutorForm.nome.trim()}>
+            <button className="btn btn-outline" onClick={() => setView(editingTutorId && selectedTutor ? 'detail' : 'list')}>Cancelar</button>
+            <button className="btn btn-primary" onClick={handleSaveTutor} disabled={saving || !tutorForm.nome.trim()}>
               <Save size={18} /> {saving ? 'Salvando...' : 'Salvar Tutor'}
             </button>
           </div>
@@ -268,7 +268,7 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
         </button>
         <h2>{currentTutor?.nome}</h2>
         <div style={{ display: 'flex', gap: 8 }}>
-          <button className="btn-secondary" onClick={() => handleEditTutor(currentTutor)}>
+          <button className="btn btn-outline" onClick={() => handleEditTutor(currentTutor)}>
             <Edit2 size={16} /> Editar
           </button>
         </div>
@@ -286,24 +286,24 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
       </div>
 
       {/* Animals section */}
-      <div className="form-card" style={{ marginTop: 20 }}>
+      <div className="card" style={{ marginTop: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-          <h3><PawPrint size={18} /> Pacientes (Animais)</h3>
-          <button className="btn-primary btn-sm" onClick={() => { setPacienteForm(emptyPaciente); setEditingPacienteId(null); setShowPacienteForm(true); }}>
+          <h3 className="card-section-title"><PawPrint size={18} /> Pacientes (Animais)</h3>
+          <button className="btn btn-primary btn-sm" onClick={() => { setPacienteForm(emptyPaciente); setEditingPacienteId(null); setShowPacienteForm(true); }}>
             <Plus size={16} /> Adicionar Animal
           </button>
         </div>
 
         {showPacienteForm && (
           <div className="paciente-form-inline">
-            <div className="form-grid">
+            <div className="form-row">
               <div className="form-group">
-                <label>Nome do Animal *</label>
-                <input value={pacienteForm.nome} onChange={e => setPacienteForm({ ...pacienteForm, nome: e.target.value })} placeholder="Nome" />
+                <label className="form-label">Nome do Animal *</label>
+                <input className="form-input" value={pacienteForm.nome} onChange={e => setPacienteForm({ ...pacienteForm, nome: e.target.value })} placeholder="Nome" />
               </div>
               <div className="form-group">
-                <label>Espécie</label>
-                <select value={pacienteForm.especie} onChange={e => setPacienteForm({ ...pacienteForm, especie: e.target.value })}>
+                <label className="form-label">Espécie</label>
+                <select className="form-select" value={pacienteForm.especie} onChange={e => setPacienteForm({ ...pacienteForm, especie: e.target.value })}>
                   <option>Canino</option>
                   <option>Felino</option>
                   <option>Ave</option>
@@ -314,32 +314,32 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
                 </select>
               </div>
               <div className="form-group">
-                <label>Raça</label>
-                <input value={pacienteForm.raca} onChange={e => setPacienteForm({ ...pacienteForm, raca: e.target.value })} placeholder="Raça" />
+                <label className="form-label">Raça</label>
+                <input className="form-input" value={pacienteForm.raca} onChange={e => setPacienteForm({ ...pacienteForm, raca: e.target.value })} placeholder="Raça" />
               </div>
               <div className="form-group">
-                <label>Idade</label>
-                <input value={pacienteForm.idade} onChange={e => setPacienteForm({ ...pacienteForm, idade: e.target.value })} placeholder="Ex: 3 anos" />
+                <label className="form-label">Idade</label>
+                <input className="form-input" value={pacienteForm.idade} onChange={e => setPacienteForm({ ...pacienteForm, idade: e.target.value })} placeholder="Ex: 3 anos" />
               </div>
               <div className="form-group">
-                <label>Sexo</label>
-                <select value={pacienteForm.sexo} onChange={e => setPacienteForm({ ...pacienteForm, sexo: e.target.value })}>
+                <label className="form-label">Sexo</label>
+                <select className="form-select" value={pacienteForm.sexo} onChange={e => setPacienteForm({ ...pacienteForm, sexo: e.target.value })}>
                   <option>Macho</option>
                   <option>Fêmea</option>
                 </select>
               </div>
               <div className="form-group">
-                <label>Peso (kg)</label>
-                <input type="number" step="0.1" value={pacienteForm.peso} onChange={e => setPacienteForm({ ...pacienteForm, peso: e.target.value })} placeholder="0.0" />
+                <label className="form-label">Peso (kg)</label>
+                <input className="form-input" type="number" step="0.1" value={pacienteForm.peso} onChange={e => setPacienteForm({ ...pacienteForm, peso: e.target.value })} placeholder="0.0" />
               </div>
               <div className="form-group">
-                <label>Microchip</label>
-                <input value={pacienteForm.microchip} onChange={e => setPacienteForm({ ...pacienteForm, microchip: e.target.value })} placeholder="Nº do microchip" />
+                <label className="form-label">Microchip</label>
+                <input className="form-input" value={pacienteForm.microchip} onChange={e => setPacienteForm({ ...pacienteForm, microchip: e.target.value })} placeholder="Nº do microchip" />
               </div>
             </div>
             <div className="form-actions">
-              <button className="btn-secondary" onClick={() => { setShowPacienteForm(false); setEditingPacienteId(null); setPacienteForm(emptyPaciente); }}>Cancelar</button>
-              <button className="btn-primary" onClick={handleSavePaciente} disabled={saving || !pacienteForm.nome.trim()}>
+              <button className="btn btn-outline" onClick={() => { setShowPacienteForm(false); setEditingPacienteId(null); setPacienteForm(emptyPaciente); }}>Cancelar</button>
+              <button className="btn btn-primary" onClick={handleSavePaciente} disabled={saving || !pacienteForm.nome.trim()}>
                 <Save size={16} /> {saving ? 'Salvando...' : (editingPacienteId ? 'Atualizar' : 'Adicionar')}
               </button>
             </div>
