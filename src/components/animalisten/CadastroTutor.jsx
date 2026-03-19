@@ -285,7 +285,7 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
                 </div>
                 <div className="ct-form-field">
                   <label><CreditCard size={14} /> CPF</label>
-                  <input className="form-input" value={tutorForm.cpf} onChange={e => setTutorForm({ ...tutorForm, cpf: e.target.value })} placeholder="000.000.000-00" />
+                  <input className="form-input" value={tutorForm.cpf} onChange={e => setTutorForm({ ...tutorForm, cpf: maskCPF(e.target.value) })} placeholder="000.000.000-00" />
                 </div>
                 <div className="ct-form-field">
                   <label><Phone size={14} /> Telefone</label>
