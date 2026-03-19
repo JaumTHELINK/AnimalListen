@@ -123,7 +123,7 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
         animal_pelagem: paciente.pelagem || '',
         animal_alergias: paciente.alergias || '',
         animal_doenca_cronica: paciente.doenca_cronica || '',
-        animal_castrado: paciente.castrado || false,
+        animal_castrado: paciente.castrado ? 'Sim' : 'Não',
       }));
     }
   };
