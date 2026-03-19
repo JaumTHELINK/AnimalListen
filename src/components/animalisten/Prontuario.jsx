@@ -63,7 +63,7 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
         animal_pelagem: prontuario.animal_pelagem || '',
         animal_alergias: prontuario.animal_alergias || '',
         animal_doenca_cronica: prontuario.animal_doenca_cronica || '',
-        animal_castrado: prontuario.animal_castrado || false,
+        animal_castrado: prontuario.animal_castrado ? 'Sim' : 'Não',
         queixa_principal: prontuario.queixa_principal || '',
         historico_doenca: prontuario.historico_doenca || '',
         temperatura: prontuario.temperatura || '',
