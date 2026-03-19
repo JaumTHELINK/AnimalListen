@@ -104,13 +104,22 @@ function Index() {
             onDeletePaciente={deletePaciente}
           />
         );
+      case 'prontuario-hub':
+        return (
+          <ProntuarioHub
+            prontuarios={prontuarios}
+            onNavigate={handleNavigate}
+            onSelectProntuario={handleSelectProntuario}
+          />
+        );
+      case 'prontuario-novo':
       case 'prontuario':
         return (
           <Prontuario
             prontuario={selectedProntuario}
             onBack={() => {
               setSelectedProntuario(null);
-              setCurrentPage('dashboard');
+              setCurrentPage('prontuario-hub');
             }}
             onSave={handleSaveProntuario}
           />
