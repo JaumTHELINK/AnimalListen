@@ -101,6 +101,7 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
         tutor_endereco: tutor.endereco || '',
         animal_nome: '', animal_especie: '', animal_raca: '', animal_idade: '',
         animal_sexo: '', animal_peso: '', animal_microchip: '',
+        animal_porte: '', animal_pelagem: '', animal_alergias: '', animal_doenca_cronica: '', animal_castrado: false,
       }));
     }
   };
