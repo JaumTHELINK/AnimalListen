@@ -1,4 +1,4 @@
-import { LayoutDashboard, FileText, Hospital, LogOut, History, Users, X } from 'lucide-react';
+import { LayoutDashboard, FileText, Hospital, LogOut, History, Users, X, Settings } from 'lucide-react';
 
 export default function Sidebar({ currentPage, onNavigate, user, onLogout, isOpen, onClose }) {
   const menuItems = [
@@ -7,6 +7,7 @@ export default function Sidebar({ currentPage, onNavigate, user, onLogout, isOpe
     { id: 'prontuario-hub', label: 'Prontuários', icon: FileText },
     { id: 'internacao', label: 'Internações', icon: Hospital },
     { id: 'historico', label: 'Histórico', icon: History },
+    { id: 'configuracoes', label: 'Configurações', icon: Settings },
   ];
 
   return (

@@ -2,14 +2,16 @@ import { useState, useEffect, useRef } from 'react';
 import {
   User, PawPrint, ClipboardList, Stethoscope, Pill, MessageSquare,
   Save, ArrowLeft, Edit, Lock, X, Printer, Activity, FileText, Sparkles,
-  Cpu, Upload, Palette, ChevronDown, Clock, CheckCircle, Trash2,
+  Cpu, Upload, Palette, ChevronDown, Clock, CheckCircle, Trash2, History,
 } from 'lucide-react';
 import AudioUpload from './AudioUpload';
 import { generateProntuarioNumber } from '../../data/mockData';
 import { useTutores } from '../../hooks/useTutores';
+import { useProntuarios } from '../../hooks/useProntuarios';
 
 export default function Prontuario({ prontuario, onBack, onSave }) {
   const { tutores, isLoading: tutoresLoading } = useTutores();
+  const { prontuarios: allProntuarios } = useProntuarios();
   const [selectedTutorId, setSelectedTutorId] = useState('');
   const [selectedPacienteId, setSelectedPacienteId] = useState('');
   const [editMode, setEditMode] = useState(!prontuario);
@@ -441,55 +443,55 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
             </div>
           )}
 
-          {/* Customization Controls (Personalizado only) */}
-          {isPersonalizado && (
+          {/* Histórico do Animal Selecionado */}
+          {form.animal_nome && (
             <div className="card mt-4">
               <div className="section-header" style={{ marginBottom: '12px' }}>
                 <div className="section-icon blue">
-                  <Palette size={16} />
+                  <History size={16} />
                 </div>
-                <h3 style={{ fontSize: '0.9rem' }}>Personalização</h3>
+                <h3 style={{ fontSize: '0.9rem' }}>Histórico de {form.animal_nome}</h3>
               </div>
-              <div className="form-group">
-                <label className="form-label">Cor do Cabeçalho</label>
-                <div className="flex items-center gap-3">
-                  <input
-                    type="color"
-                    value={customColor}
-                    onChange={(e) => setCustomColor(e.target.value)}
-                    className="color-picker"
-                  />
-                  <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{customColor}</span>
-                </div>
-              </div>
-              <div className="form-group">
-                <label className="form-label">Logo do Estabelecimento</label>
-                <div
-                  className="logo-upload-area"
-                  onClick={() => logoInputRef.current?.click()}
-                >
-                  {customLogo ? (
-                    <img src={customLogo} alt="Logo" className="logo-preview" />
-                  ) : (
-                    <>
-                      <Upload size={20} style={{ color: 'var(--text-muted)' }} />
-                      <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Upload logo</span>
-                    </>
-                  )}
-                </div>
-                <input
-                  ref={logoInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleLogoUpload}
-                  style={{ display: 'none' }}
-                />
-                {customLogo && (
-                  <button className="btn btn-outline btn-sm mt-2 w-full" onClick={() => setCustomLogo(null)}>
-                    Remover logo
-                  </button>
-                )}
-              </div>
+              {(() => {
+                const historico = allProntuarios.filter(
+                  (p) =>
+                    p.animal_nome &&
+                    p.animal_nome.toLowerCase() === form.animal_nome.toLowerCase() &&
+                    p.tutor_cpf === form.tutor_cpf &&
+                    p.numero_prontuario !== numeroProntuario
+                );
+                if (historico.length === 0) {
+                  return (
+                    <p className="text-xs" style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '12px 0' }}>
+                      Nenhuma consulta anterior encontrada.
+                    </p>
+                  );
+                }
+                return (
+                  <div className="historico-animal-list">
+                    {historico.map((h) => (
+                      <div key={h.id} className="historico-animal-item">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-bold" style={{ color: 'var(--primary)' }}>
+                            #{h.numero_prontuario}
+                          </span>
+                          <span className={`status-badge status-${h.status || 'incompleto'}`}>
+                            {h.status === 'completo' ? 'Completo' : h.status === 'cancelado' ? 'Cancelado' : 'Incompleto'}
+                          </span>
+                        </div>
+                        <p className="text-xs" style={{ color: 'var(--text-muted)', marginTop: '4px' }}>
+                          {h.data_atendimento ? new Date(h.data_atendimento).toLocaleDateString('pt-BR') : 'Sem data'}
+                        </p>
+                        {h.queixa_principal && (
+                          <p className="text-xs" style={{ color: 'var(--text-secondary)', marginTop: '4px' }}>
+                            {h.queixa_principal.substring(0, 80)}{h.queixa_principal.length > 80 ? '...' : ''}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
             </div>
           )}
         </div>
