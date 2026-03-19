@@ -5,11 +5,12 @@ export default function ProntuarioHub({ prontuarios, onNavigate, onSelectProntua
   const [search, setSearch] = useState('');
 
   const abertos = prontuarios.filter((p) => p.status === 'incompleto');
-  const completos = prontuarios.filter((p) => p.status !== 'incompleto');
+  const completos = prontuarios.filter((p) => p.status === 'completo');
+  const cancelados = prontuarios.filter((p) => p.status === 'cancelado');
 
   const [tab, setTab] = useState('abertos');
 
-  const list = tab === 'abertos' ? abertos : completos;
+  const list = tab === 'abertos' ? abertos : tab === 'cancelados' ? cancelados : completos;
 
   const filtered = list.filter((p) => {
     const term = search.toLowerCase();
