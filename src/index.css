@@ -1154,6 +1154,34 @@ body {
   white-space: nowrap;
 }
 
+/* Histórico do animal na sidebar do prontuário */
+.historico-animal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.historico-animal-item {
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  background: var(--background-alt);
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+
+.historico-animal-item--clickable {
+  cursor: pointer;
+}
+
+.historico-animal-item--clickable:hover {
+  border-color: var(--primary);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
 /* ===== Utility ===== */
 .flex { display: flex; }
 .flex-col { flex-direction: column; }
