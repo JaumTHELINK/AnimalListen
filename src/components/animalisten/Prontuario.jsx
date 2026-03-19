@@ -158,6 +158,26 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
     }
   };
 
+  const handleCancel = async () => {
+    if (!window.confirm('Tem certeza que deseja cancelar este prontuário? Esta ação não pode ser desfeita.')) return;
+    const fullData = buildFullData('cancelado');
+    try {
+      if (onSave) await onSave(fullData);
+    } catch (err) {
+      console.error('Erro ao cancelar prontuário:', err);
+    }
+  };
+
+  const handleFinalize = async () => {
+    if (!window.confirm('Deseja finalizar este prontuário e enviá-lo ao histórico?')) return;
+    const fullData = buildFullData('completo');
+    try {
+      if (onSave) await onSave(fullData);
+    } catch (err) {
+      console.error('Erro ao finalizar prontuário:', err);
+    }
+  };
+
   const handleLogoUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
