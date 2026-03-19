@@ -22,6 +22,7 @@ function Index() {
     prontuarios,
     isLoading: loadingProntuarios,
     saveProntuario,
+    deleteProntuario,
   } = useProntuarios();
 
   const {
@@ -123,6 +124,8 @@ function Index() {
               setCurrentPage('prontuario-hub');
             }}
             onSave={handleSaveProntuario}
+            onSelectProntuario={handleSelectProntuario}
+            onDeleteProntuario={deleteProntuario}
           />
         );
       case 'internacao':
