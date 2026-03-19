@@ -22,6 +22,7 @@ function Index() {
     prontuarios,
     isLoading: loadingProntuarios,
     saveProntuario,
+    deleteProntuario,
   } = useProntuarios();
 
   const {
