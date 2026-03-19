@@ -1,0 +1,1 @@
+ALTER TABLE public.prontuarios ADD COLUMN status text NOT NULL DEFAULT 'completo';
