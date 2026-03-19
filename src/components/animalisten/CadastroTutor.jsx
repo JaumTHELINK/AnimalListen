@@ -1,6 +1,27 @@
 import { useState } from 'react';
 import { User, PawPrint, Plus, Trash2, Edit2, Save, ArrowLeft, Search, ChevronDown, ChevronUp, Phone, Mail, MapPin, CreditCard, Weight, Dna, Calendar, Heart, Scissors, AlertTriangle, FileText, Ruler } from 'lucide-react';
 
+const maskCPF = (value) => {
+  return value
+    .replace(/\D/g, '')
+    .slice(0, 11)
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+};
+
+const maskPhone = (value) => {
+  const digits = value.replace(/\D/g, '').slice(0, 11);
+  if (digits.length <= 10) {
+    return digits
+      .replace(/(\d{2})(\d)/, '($1) $2')
+      .replace(/(\d{4})(\d)/, '$1-$2');
+  }
+  return digits
+    .replace(/(\d{2})(\d)/, '($1) $2')
+    .replace(/(\d{5})(\d)/, '$1-$2');
+};
+
 const emptyTutor = {
   nome: '', cpf: '', telefone: '', email: '', endereco: '', observacoes: '',
 };
@@ -264,11 +285,11 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
                 </div>
                 <div className="ct-form-field">
                   <label><CreditCard size={14} /> CPF</label>
-                  <input className="form-input" value={tutorForm.cpf} onChange={e => setTutorForm({ ...tutorForm, cpf: e.target.value })} placeholder="000.000.000-00" />
+                  <input className="form-input" value={tutorForm.cpf} onChange={e => setTutorForm({ ...tutorForm, cpf: maskCPF(e.target.value) })} placeholder="000.000.000-00" />
                 </div>
                 <div className="ct-form-field">
                   <label><Phone size={14} /> Telefone</label>
-                  <input className="form-input" value={tutorForm.telefone} onChange={e => setTutorForm({ ...tutorForm, telefone: e.target.value })} placeholder="(00) 00000-0000" />
+                  <input className="form-input" value={tutorForm.telefone} onChange={e => setTutorForm({ ...tutorForm, telefone: maskPhone(e.target.value) })} placeholder="(00) 00000-0000" />
                 </div>
                 <div className="ct-form-field">
                   <label><Mail size={14} /> Email</label>
