@@ -26,6 +26,7 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
     tutor_nome: '', tutor_cpf: '', tutor_telefone: '', tutor_email: '', tutor_endereco: '',
     animal_nome: '', animal_especie: '', animal_raca: '', animal_idade: '', animal_sexo: '',
     animal_peso: '', animal_microchip: '',
+    animal_porte: '', animal_pelagem: '', animal_alergias: '', animal_doenca_cronica: '', animal_castrado: false,
     queixa_principal: '', historico_doenca: '',
     temperatura: '', frequencia_cardiaca: '', frequencia_respiratoria: '', mucosas: '', palpacao_abdominal: '',
     suspeita_diagnostica: '', tratamento_prescrito: '',
