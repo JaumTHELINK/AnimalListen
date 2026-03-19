@@ -1,8 +1,9 @@
-import { LayoutDashboard, FileText, Hospital, LogOut, History, X } from 'lucide-react';
+import { LayoutDashboard, FileText, Hospital, LogOut, History, Users, X } from 'lucide-react';
 
 export default function Sidebar({ currentPage, onNavigate, user, onLogout, isOpen, onClose }) {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'tutores', label: 'Tutores', icon: Users },
     { id: 'prontuario', label: 'Novo Prontuário', icon: FileText },
     { id: 'internacao', label: 'Internações', icon: Hospital },
     { id: 'historico', label: 'Histórico', icon: History },

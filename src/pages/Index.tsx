@@ -5,8 +5,10 @@ import Dashboard from '../components/animalisten/Dashboard';
 import Prontuario from '../components/animalisten/Prontuario';
 import Internacao from '../components/animalisten/Internacao';
 import HistoricoPaciente from '../components/animalisten/HistoricoPaciente';
+import CadastroTutor from '../components/animalisten/CadastroTutor';
 import { useProntuarios } from '../hooks/useProntuarios';
 import { useInternacoes } from '../hooks/useInternacoes';
+import { useTutores } from '../hooks/useTutores';
 
 function Index() {
   const [user, setUser] = useState(null);
@@ -30,6 +32,15 @@ function Index() {
     updateRegistro,
     deleteRegistro,
   } = useInternacoes();
+
+  const {
+    tutores,
+    isLoading: loadingTutores,
+    saveTutor,
+    deleteTutor,
+    savePaciente,
+    deletePaciente,
+  } = useTutores();
 
   const handleLogin = (userData) => {
     setUser(userData);
@@ -61,7 +72,7 @@ function Index() {
     return <Login onLogin={handleLogin} />;
   }
 
-  const isLoading = loadingProntuarios || loadingInternacoes;
+  const isLoading = loadingProntuarios || loadingInternacoes || loadingTutores;
 
   const renderPage = () => {
     if (isLoading) {
@@ -80,6 +91,16 @@ function Index() {
             prontuarios={prontuarios}
             onNavigate={handleNavigate}
             onSelectProntuario={handleSelectProntuario}
+          />
+        );
+      case 'tutores':
+        return (
+          <CadastroTutor
+            tutores={tutores}
+            onSaveTutor={saveTutor}
+            onDeleteTutor={deleteTutor}
+            onSavePaciente={savePaciente}
+            onDeletePaciente={deletePaciente}
           />
         );
       case 'prontuario':

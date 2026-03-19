@@ -106,6 +106,56 @@ export type Database = {
         }
         Relationships: []
       }
+      pacientes: {
+        Row: {
+          created_at: string
+          especie: string | null
+          foto: string | null
+          id: string
+          idade: string | null
+          microchip: string | null
+          nome: string
+          peso: number | null
+          raca: string | null
+          sexo: string | null
+          tutor_id: string
+        }
+        Insert: {
+          created_at?: string
+          especie?: string | null
+          foto?: string | null
+          id?: string
+          idade?: string | null
+          microchip?: string | null
+          nome: string
+          peso?: number | null
+          raca?: string | null
+          sexo?: string | null
+          tutor_id: string
+        }
+        Update: {
+          created_at?: string
+          especie?: string | null
+          foto?: string | null
+          id?: string
+          idade?: string | null
+          microchip?: string | null
+          nome?: string
+          peso?: number | null
+          raca?: string | null
+          sexo?: string | null
+          tutor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pacientes_tutor_id_fkey"
+            columns: ["tutor_id"]
+            isOneToOne: false
+            referencedRelation: "tutores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       prontuarios: {
         Row: {
           animal_especie: string | null
@@ -205,6 +255,36 @@ export type Database = {
           tutor_endereco?: string | null
           tutor_nome?: string | null
           tutor_telefone?: string | null
+        }
+        Relationships: []
+      }
+      tutores: {
+        Row: {
+          cpf: string | null
+          created_at: string
+          email: string | null
+          endereco: string | null
+          id: string
+          nome: string
+          telefone: string | null
+        }
+        Insert: {
+          cpf?: string | null
+          created_at?: string
+          email?: string | null
+          endereco?: string | null
+          id?: string
+          nome: string
+          telefone?: string | null
+        }
+        Update: {
+          cpf?: string | null
+          created_at?: string
+          email?: string | null
+          endereco?: string | null
+          id?: string
+          nome?: string
+          telefone?: string | null
         }
         Relationships: []
       }
