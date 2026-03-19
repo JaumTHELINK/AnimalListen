@@ -205,7 +205,7 @@ export default function CadastroTutor({ tutores, onSaveTutor, onDeleteTutor, onS
                   </button>
                 </div>
               </div>
-            )))}
+            ))}
           </div>
         )}
       </div>
