@@ -7,6 +7,7 @@ import ProntuarioHub from '../components/animalisten/ProntuarioHub';
 import Internacao from '../components/animalisten/Internacao';
 import HistoricoPaciente from '../components/animalisten/HistoricoPaciente';
 import CadastroTutor from '../components/animalisten/CadastroTutor';
+import Configuracoes from '../components/animalisten/Configuracoes';
 import { useProntuarios } from '../hooks/useProntuarios';
 import { useInternacoes } from '../hooks/useInternacoes';
 import { useTutores } from '../hooks/useTutores';
