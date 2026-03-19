@@ -174,10 +174,13 @@ export default function Prontuario({ prontuario, onBack, onSave, onSelectProntua
   };
 
   const handleCancel = async () => {
-    if (!window.confirm('Tem certeza que deseja cancelar este prontuário? Esta ação não pode ser desfeita.')) return;
-    const fullData = buildFullData('cancelado');
+    if (!window.confirm('Tem certeza que deseja cancelar e excluir este prontuário? Esta ação não pode ser desfeita.')) return;
     try {
-      if (onSave) await onSave(fullData);
+      // If it's a saved prontuario (has UUID id), delete it from DB
+      if (prontuario?.id && typeof prontuario.id === 'string' && prontuario.id.includes('-')) {
+        if (onDeleteProntuario) await onDeleteProntuario(prontuario.id);
+      }
+      if (onBack) onBack();
     } catch (err) {
       console.error('Erro ao cancelar prontuário:', err);
     }
