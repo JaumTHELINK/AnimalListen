@@ -45,11 +45,25 @@ export function useProntuarios() {
     },
   });
 
+  const deleteMutation = useMutation({
+    mutationFn: async (id) => {
+      const { error } = await supabase
+        .from('prontuarios')
+        .delete()
+        .eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['prontuarios'] });
+    },
+  });
+
   return {
     prontuarios,
     isLoading,
     error,
     saveProntuario: saveMutation.mutateAsync,
+    deleteProntuario: deleteMutation.mutateAsync,
     isSaving: saveMutation.isPending,
   };
 }

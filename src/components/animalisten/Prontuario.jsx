@@ -461,7 +461,8 @@ export default function Prontuario({ prontuario, onBack, onSave, onSelectProntua
                     p.animal_nome &&
                     p.animal_nome.toLowerCase() === form.animal_nome.toLowerCase() &&
                     p.tutor_cpf === form.tutor_cpf &&
-                    p.numero_prontuario !== numeroProntuario
+                    p.numero_prontuario !== numeroProntuario &&
+                    p.status !== 'cancelado'
                 );
                 if (historico.length === 0) {
                   return (
@@ -473,22 +474,42 @@ export default function Prontuario({ prontuario, onBack, onSave, onSelectProntua
                 return (
                   <div className="historico-animal-list">
                     {historico.map((h) => (
-                      <div key={h.id} className="historico-animal-item">
+                      <div
+                        key={h.id}
+                        className="historico-animal-item historico-animal-item--clickable"
+                        onClick={() => onSelectProntuario && onSelectProntuario(h)}
+                        title="Clique para abrir este prontuário"
+                      >
                         <div className="flex items-center justify-between">
                           <span className="text-sm font-bold" style={{ color: 'var(--primary)' }}>
                             #{h.numero_prontuario}
                           </span>
                           <span className={`status-badge status-${h.status || 'incompleto'}`}>
-                            {h.status === 'completo' ? 'Completo' : h.status === 'cancelado' ? 'Cancelado' : 'Incompleto'}
+                            {h.status === 'completo' ? 'Completo' : 'Incompleto'}
                           </span>
                         </div>
                         <p className="text-xs" style={{ color: 'var(--text-muted)', marginTop: '4px' }}>
-                          {h.data_atendimento ? new Date(h.data_atendimento).toLocaleDateString('pt-BR') : 'Sem data'}
+                          {h.data_atendimento ? new Date(h.data_atendimento).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' }) : 'Sem data'}
                         </p>
                         {h.queixa_principal && (
-                          <p className="text-xs" style={{ color: 'var(--text-secondary)', marginTop: '4px' }}>
-                            {h.queixa_principal.substring(0, 80)}{h.queixa_principal.length > 80 ? '...' : ''}
+                          <p className="text-xs" style={{ color: 'var(--text-secondary)', marginTop: '4px', fontStyle: 'italic' }}>
+                            <strong>Queixa:</strong> {h.queixa_principal.substring(0, 100)}{h.queixa_principal.length > 100 ? '...' : ''}
                           </p>
+                        )}
+                        {h.suspeita_diagnostica && (
+                          <p className="text-xs" style={{ color: 'var(--text-secondary)', marginTop: '2px' }}>
+                            <strong>Diagnóstico:</strong> {h.suspeita_diagnostica.substring(0, 80)}{h.suspeita_diagnostica.length > 80 ? '...' : ''}
+                          </p>
+                        )}
+                        {(h.sintomas && h.sintomas.length > 0) && (
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px' }}>
+                            {h.sintomas.slice(0, 3).map((s, i) => (
+                              <span key={i} className="tag tag-red" style={{ fontSize: '0.65rem', padding: '1px 6px' }}>{s}</span>
+                            ))}
+                            {h.sintomas.length > 3 && (
+                              <span className="text-xs" style={{ color: 'var(--text-muted)' }}>+{h.sintomas.length - 3}</span>
+                            )}
+                          </div>
                         )}
                       </div>
                     ))}
