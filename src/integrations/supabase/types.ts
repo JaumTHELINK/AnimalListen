@@ -14,7 +14,200 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      internacao_registros: {
+        Row: {
+          created_at: string
+          hora: string | null
+          id: string
+          internacao_id: string
+          notas: string | null
+          tipo: string
+          valor: string | null
+        }
+        Insert: {
+          created_at?: string
+          hora?: string | null
+          id?: string
+          internacao_id: string
+          notas?: string | null
+          tipo: string
+          valor?: string | null
+        }
+        Update: {
+          created_at?: string
+          hora?: string | null
+          id?: string
+          internacao_id?: string
+          notas?: string | null
+          tipo?: string
+          valor?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "internacao_registros_internacao_id_fkey"
+            columns: ["internacao_id"]
+            isOneToOne: false
+            referencedRelation: "internacoes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      internacoes: {
+        Row: {
+          animal_especie: string | null
+          animal_idade: string | null
+          animal_microchip: string | null
+          animal_nome: string | null
+          animal_peso: number | null
+          animal_raca: string | null
+          created_at: string
+          data_internacao: string | null
+          foto: string | null
+          id: string
+          motivo: string | null
+          status: string
+          tutor_cpf: string | null
+          tutor_nome: string | null
+          tutor_telefone: string | null
+        }
+        Insert: {
+          animal_especie?: string | null
+          animal_idade?: string | null
+          animal_microchip?: string | null
+          animal_nome?: string | null
+          animal_peso?: number | null
+          animal_raca?: string | null
+          created_at?: string
+          data_internacao?: string | null
+          foto?: string | null
+          id?: string
+          motivo?: string | null
+          status?: string
+          tutor_cpf?: string | null
+          tutor_nome?: string | null
+          tutor_telefone?: string | null
+        }
+        Update: {
+          animal_especie?: string | null
+          animal_idade?: string | null
+          animal_microchip?: string | null
+          animal_nome?: string | null
+          animal_peso?: number | null
+          animal_raca?: string | null
+          created_at?: string
+          data_internacao?: string | null
+          foto?: string | null
+          id?: string
+          motivo?: string | null
+          status?: string
+          tutor_cpf?: string | null
+          tutor_nome?: string | null
+          tutor_telefone?: string | null
+        }
+        Relationships: []
+      }
+      prontuarios: {
+        Row: {
+          animal_especie: string | null
+          animal_idade: string | null
+          animal_microchip: string | null
+          animal_nome: string | null
+          animal_peso: number | null
+          animal_raca: string | null
+          animal_sexo: string | null
+          comportamento: string[] | null
+          created_at: string
+          data_atendimento: string | null
+          exames_solicitados: string[] | null
+          frequencia_cardiaca: number | null
+          frequencia_respiratoria: number | null
+          historico_doenca: string | null
+          id: string
+          medicamentos: string[] | null
+          mucosas: string | null
+          numero_prontuario: string
+          observacoes_gerais: string | null
+          palpacao_abdominal: string | null
+          queixa_principal: string | null
+          recomendacoes: string | null
+          sintomas: string[] | null
+          suspeita_diagnostica: string | null
+          temperatura: number | null
+          tratamento_prescrito: string | null
+          tutor_cpf: string | null
+          tutor_email: string | null
+          tutor_endereco: string | null
+          tutor_nome: string | null
+          tutor_telefone: string | null
+        }
+        Insert: {
+          animal_especie?: string | null
+          animal_idade?: string | null
+          animal_microchip?: string | null
+          animal_nome?: string | null
+          animal_peso?: number | null
+          animal_raca?: string | null
+          animal_sexo?: string | null
+          comportamento?: string[] | null
+          created_at?: string
+          data_atendimento?: string | null
+          exames_solicitados?: string[] | null
+          frequencia_cardiaca?: number | null
+          frequencia_respiratoria?: number | null
+          historico_doenca?: string | null
+          id?: string
+          medicamentos?: string[] | null
+          mucosas?: string | null
+          numero_prontuario: string
+          observacoes_gerais?: string | null
+          palpacao_abdominal?: string | null
+          queixa_principal?: string | null
+          recomendacoes?: string | null
+          sintomas?: string[] | null
+          suspeita_diagnostica?: string | null
+          temperatura?: number | null
+          tratamento_prescrito?: string | null
+          tutor_cpf?: string | null
+          tutor_email?: string | null
+          tutor_endereco?: string | null
+          tutor_nome?: string | null
+          tutor_telefone?: string | null
+        }
+        Update: {
+          animal_especie?: string | null
+          animal_idade?: string | null
+          animal_microchip?: string | null
+          animal_nome?: string | null
+          animal_peso?: number | null
+          animal_raca?: string | null
+          animal_sexo?: string | null
+          comportamento?: string[] | null
+          created_at?: string
+          data_atendimento?: string | null
+          exames_solicitados?: string[] | null
+          frequencia_cardiaca?: number | null
+          frequencia_respiratoria?: number | null
+          historico_doenca?: string | null
+          id?: string
+          medicamentos?: string[] | null
+          mucosas?: string | null
+          numero_prontuario?: string
+          observacoes_gerais?: string | null
+          palpacao_abdominal?: string | null
+          queixa_principal?: string | null
+          recomendacoes?: string | null
+          sintomas?: string[] | null
+          suspeita_diagnostica?: string | null
+          temperatura?: number | null
+          tratamento_prescrito?: string | null
+          tutor_cpf?: string | null
+          tutor_email?: string | null
+          tutor_endereco?: string | null
+          tutor_nome?: string | null
+          tutor_telefone?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
