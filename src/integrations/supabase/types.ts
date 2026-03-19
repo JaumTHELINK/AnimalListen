@@ -108,40 +108,55 @@ export type Database = {
       }
       pacientes: {
         Row: {
+          alergias: string | null
+          castrado: boolean | null
           created_at: string
+          doenca_cronica: string | null
           especie: string | null
           foto: string | null
           id: string
           idade: string | null
           microchip: string | null
           nome: string
+          pelagem: string | null
           peso: number | null
+          porte: string | null
           raca: string | null
           sexo: string | null
           tutor_id: string
         }
         Insert: {
+          alergias?: string | null
+          castrado?: boolean | null
           created_at?: string
+          doenca_cronica?: string | null
           especie?: string | null
           foto?: string | null
           id?: string
           idade?: string | null
           microchip?: string | null
           nome: string
+          pelagem?: string | null
           peso?: number | null
+          porte?: string | null
           raca?: string | null
           sexo?: string | null
           tutor_id: string
         }
         Update: {
+          alergias?: string | null
+          castrado?: boolean | null
           created_at?: string
+          doenca_cronica?: string | null
           especie?: string | null
           foto?: string | null
           id?: string
           idade?: string | null
           microchip?: string | null
           nome?: string
+          pelagem?: string | null
           peso?: number | null
+          porte?: string | null
           raca?: string | null
           sexo?: string | null
           tutor_id?: string
@@ -269,6 +284,7 @@ export type Database = {
           endereco: string | null
           id: string
           nome: string
+          observacoes: string | null
           telefone: string | null
         }
         Insert: {
@@ -278,6 +294,7 @@ export type Database = {
           endereco?: string | null
           id?: string
           nome: string
+          observacoes?: string | null
           telefone?: string | null
         }
         Update: {
@@ -287,6 +304,7 @@ export type Database = {
           endereco?: string | null
           id?: string
           nome?: string
+          observacoes?: string | null
           telefone?: string | null
         }
         Relationships: []
