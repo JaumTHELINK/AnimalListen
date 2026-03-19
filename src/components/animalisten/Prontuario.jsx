@@ -148,6 +148,7 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
     numero_prontuario: numeroProntuario,
     ...form,
     animal_peso: form.animal_peso ? parseFloat(form.animal_peso) : null,
+    animal_castrado: form.animal_castrado === 'Sim' || form.animal_castrado === true,
     temperatura: form.temperatura ? parseFloat(form.temperatura) : null,
     frequencia_cardiaca: form.frequencia_cardiaca ? parseInt(form.frequencia_cardiaca) : null,
     frequencia_respiratoria: form.frequencia_respiratoria ? parseInt(form.frequencia_respiratoria) : null,
