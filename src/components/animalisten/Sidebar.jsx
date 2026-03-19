@@ -4,7 +4,7 @@ export default function Sidebar({ currentPage, onNavigate, user, onLogout, isOpe
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'tutores', label: 'Tutores', icon: Users },
-    { id: 'prontuario', label: 'Novo Prontuário', icon: FileText },
+    { id: 'prontuario-hub', label: 'Prontuários', icon: FileText },
     { id: 'internacao', label: 'Internações', icon: Hospital },
     { id: 'historico', label: 'Histórico', icon: History },
   ];

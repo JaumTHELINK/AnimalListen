@@ -181,6 +181,7 @@ export type Database = {
           queixa_principal: string | null
           recomendacoes: string | null
           sintomas: string[] | null
+          status: string
           suspeita_diagnostica: string | null
           temperatura: number | null
           tratamento_prescrito: string | null
@@ -214,6 +215,7 @@ export type Database = {
           queixa_principal?: string | null
           recomendacoes?: string | null
           sintomas?: string[] | null
+          status?: string
           suspeita_diagnostica?: string | null
           temperatura?: number | null
           tratamento_prescrito?: string | null
@@ -247,6 +249,7 @@ export type Database = {
           queixa_principal?: string | null
           recomendacoes?: string | null
           sintomas?: string[] | null
+          status?: string
           suspeita_diagnostica?: string | null
           temperatura?: number | null
           tratamento_prescrito?: string | null

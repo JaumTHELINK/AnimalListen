@@ -3,6 +3,7 @@ import Login from '../components/animalisten/Login';
 import Sidebar from '../components/animalisten/Sidebar';
 import Dashboard from '../components/animalisten/Dashboard';
 import Prontuario from '../components/animalisten/Prontuario';
+import ProntuarioHub from '../components/animalisten/ProntuarioHub';
 import Internacao from '../components/animalisten/Internacao';
 import HistoricoPaciente from '../components/animalisten/HistoricoPaciente';
 import CadastroTutor from '../components/animalisten/CadastroTutor';
@@ -103,13 +104,22 @@ function Index() {
             onDeletePaciente={deletePaciente}
           />
         );
+      case 'prontuario-hub':
+        return (
+          <ProntuarioHub
+            prontuarios={prontuarios}
+            onNavigate={handleNavigate}
+            onSelectProntuario={handleSelectProntuario}
+          />
+        );
+      case 'prontuario-novo':
       case 'prontuario':
         return (
           <Prontuario
             prontuario={selectedProntuario}
             onBack={() => {
               setSelectedProntuario(null);
-              setCurrentPage('dashboard');
+              setCurrentPage('prontuario-hub');
             }}
             onSave={handleSaveProntuario}
           />

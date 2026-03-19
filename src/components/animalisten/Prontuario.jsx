@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import {
   User, PawPrint, ClipboardList, Stethoscope, Pill, MessageSquare,
   Save, ArrowLeft, Edit, Lock, X, Printer, Activity, FileText, Sparkles,
-  Cpu, Upload, Palette, ChevronDown,
+  Cpu, Upload, Palette, ChevronDown, Clock,
 } from 'lucide-react';
 import AudioUpload from './AudioUpload';
 import { generateProntuarioNumber } from '../../data/mockData';
@@ -131,21 +131,24 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
     setList(list.filter((_, i) => i !== index));
   };
 
-  const handleSave = async () => {
-    const fullData = {
-      ...(prontuario?.id ? { id: prontuario.id } : {}),
-      numero_prontuario: numeroProntuario,
-      ...form,
-      animal_peso: form.animal_peso ? parseFloat(form.animal_peso) : null,
-      temperatura: form.temperatura ? parseFloat(form.temperatura) : null,
-      frequencia_cardiaca: form.frequencia_cardiaca ? parseInt(form.frequencia_cardiaca) : null,
-      frequencia_respiratoria: form.frequencia_respiratoria ? parseInt(form.frequencia_respiratoria) : null,
-      sintomas,
-      comportamento,
-      exames_solicitados: exames,
-      medicamentos,
-      data_atendimento: prontuario?.data_atendimento || new Date().toISOString(),
-    };
+  const buildFullData = (status = 'completo') => ({
+    ...(prontuario?.id ? { id: prontuario.id } : {}),
+    numero_prontuario: numeroProntuario,
+    ...form,
+    animal_peso: form.animal_peso ? parseFloat(form.animal_peso) : null,
+    temperatura: form.temperatura ? parseFloat(form.temperatura) : null,
+    frequencia_cardiaca: form.frequencia_cardiaca ? parseInt(form.frequencia_cardiaca) : null,
+    frequencia_respiratoria: form.frequencia_respiratoria ? parseInt(form.frequencia_respiratoria) : null,
+    sintomas,
+    comportamento,
+    exames_solicitados: exames,
+    medicamentos,
+    data_atendimento: prontuario?.data_atendimento || new Date().toISOString(),
+    status,
+  });
+
+  const handleSave = async (status = 'completo') => {
+    const fullData = buildFullData(status);
     try {
       if (onSave) await onSave(fullData);
       setSaved(true);
@@ -375,7 +378,11 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
             <Printer size={14} />
             <span className="btn-label">Imprimir</span>
           </button>
-          <button className="btn btn-primary btn-sm" onClick={handleSave}>
+          <button className="btn btn-outline btn-sm" onClick={() => handleSave('incompleto')} style={{ borderColor: 'var(--warning)', color: 'var(--warning)' }}>
+            <Clock size={14} />
+            <span className="btn-label">Salvar Incompleto</span>
+          </button>
+          <button className="btn btn-primary btn-sm" onClick={() => handleSave('completo')}>
             <Save size={14} />
             {saved ? '✓ Salvo!' : 'Salvar'}
           </button>
