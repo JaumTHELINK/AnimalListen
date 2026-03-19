@@ -102,6 +102,8 @@ export default function ProntuarioHub({ prontuarios, onNavigate, onSelectProntua
       <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
         {tab === 'abertos' ? (
           <><Clock size={16} /> Prontuários em Aberto</>
+        ) : tab === 'cancelados' ? (
+          <><XCircle size={16} style={{ color: '#dc2626' }} /> Prontuários Cancelados</>
         ) : (
           <><History size={16} /> Histórico de Prontuários</>
         )}
