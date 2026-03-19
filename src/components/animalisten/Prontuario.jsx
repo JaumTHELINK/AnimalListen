@@ -2,12 +2,16 @@ import { useState, useEffect, useRef } from 'react';
 import {
   User, PawPrint, ClipboardList, Stethoscope, Pill, MessageSquare,
   Save, ArrowLeft, Edit, Lock, X, Printer, Activity, FileText, Sparkles,
-  Cpu, Upload, Palette,
+  Cpu, Upload, Palette, ChevronDown,
 } from 'lucide-react';
 import AudioUpload from './AudioUpload';
 import { generateProntuarioNumber } from '../../data/mockData';
+import { useTutores } from '../../hooks/useTutores';
 
 export default function Prontuario({ prontuario, onBack, onSave }) {
+  const { tutores, isLoading: tutoresLoading } = useTutores();
+  const [selectedTutorId, setSelectedTutorId] = useState('');
+  const [selectedPacienteId, setSelectedPacienteId] = useState('');
   const [editMode, setEditMode] = useState(!prontuario);
   const [prontuarioType, setProntuarioType] = useState('personalizado'); // 'personalizado' | 'simples'
   const [customColor, setCustomColor] = useState('#0855a1');
@@ -72,6 +76,45 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
       setMedicamentos(prontuario.medicamentos || []);
     }
   }, [prontuario]);
+
+  // Derived: selected tutor's patients
+  const selectedTutor = tutores.find((t) => t.id === selectedTutorId);
+  const pacientesDoTutor = selectedTutor?.pacientes || [];
+
+  const handleSelectTutor = (tutorId) => {
+    setSelectedTutorId(tutorId);
+    setSelectedPacienteId('');
+    const tutor = tutores.find((t) => t.id === tutorId);
+    if (tutor) {
+      setForm((prev) => ({
+        ...prev,
+        tutor_nome: tutor.nome || '',
+        tutor_cpf: tutor.cpf || '',
+        tutor_telefone: tutor.telefone || '',
+        tutor_email: tutor.email || '',
+        tutor_endereco: tutor.endereco || '',
+        animal_nome: '', animal_especie: '', animal_raca: '', animal_idade: '',
+        animal_sexo: '', animal_peso: '', animal_microchip: '',
+      }));
+    }
+  };
+
+  const handleSelectPaciente = (pacienteId) => {
+    setSelectedPacienteId(pacienteId);
+    const paciente = pacientesDoTutor.find((p) => p.id === pacienteId);
+    if (paciente) {
+      setForm((prev) => ({
+        ...prev,
+        animal_nome: paciente.nome || '',
+        animal_especie: paciente.especie || '',
+        animal_raca: paciente.raca || '',
+        animal_idade: paciente.idade || '',
+        animal_sexo: paciente.sexo || '',
+        animal_peso: paciente.peso || '',
+        animal_microchip: paciente.microchip || '',
+      }));
+    }
+  };
 
   const handleChange = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -450,6 +493,23 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
           {/* Seção: Tutor */}
           <div className="pront-section">
             <SectionHeader icon={User} title="Identificação do Tutor / Responsável" />
+            {editMode && !prontuario && (
+              <div className="pront-field" style={{ marginBottom: '12px' }}>
+                <label className="pront-label">Selecionar Tutor Cadastrado</label>
+                <select
+                  className="pront-input pront-select"
+                  value={selectedTutorId}
+                  onChange={(e) => handleSelectTutor(e.target.value)}
+                >
+                  <option value="">— Selecione um tutor —</option>
+                  {tutores.map((t) => (
+                    <option key={t.id} value={t.id}>
+                      {t.nome} {t.cpf ? `(CPF: ${t.cpf})` : ''}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
             <div className="pront-grid-2">
               {renderField('Nome Completo', 'tutor_nome')}
               {renderField('CPF', 'tutor_cpf')}
@@ -466,6 +526,28 @@ export default function Prontuario({ prontuario, onBack, onSave }) {
           {/* Seção: Animal */}
           <div className="pront-section">
             <SectionHeader icon={PawPrint} title="Identificação do Paciente" />
+            {editMode && !prontuario && selectedTutorId && (
+              <div className="pront-field" style={{ marginBottom: '12px' }}>
+                <label className="pront-label">Selecionar Paciente do Tutor</label>
+                <select
+                  className="pront-input pront-select"
+                  value={selectedPacienteId}
+                  onChange={(e) => handleSelectPaciente(e.target.value)}
+                >
+                  <option value="">— Selecione um paciente —</option>
+                  {pacientesDoTutor.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.nome} {p.especie ? `(${p.especie})` : ''}
+                    </option>
+                  ))}
+                </select>
+                {pacientesDoTutor.length === 0 && (
+                  <p className="text-xs" style={{ color: 'var(--text-muted)', marginTop: '4px' }}>
+                    Este tutor não tem pacientes cadastrados.
+                  </p>
+                )}
+              </div>
+            )}
             <div className="pront-grid-3">
               {renderField('Nome', 'animal_nome')}
               {renderField('Espécie', 'animal_especie')}
