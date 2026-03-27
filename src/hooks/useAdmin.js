@@ -7,43 +7,50 @@ export function useAdminAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) {
+    let mounted = true;
+
+    const checkAdmin = async (user) => {
+      try {
         const { data } = await supabase
           .from('user_roles')
           .select('role')
-          .eq('user_id', session.user.id)
+          .eq('user_id', user.id)
           .eq('role', 'admin')
           .maybeSingle();
-        if (data) {
-          setAdminUser(session.user);
-        } else {
-          setAdminUser(null);
+        if (mounted) {
+          setAdminUser(data ? user : null);
         }
+      } catch {
+        if (mounted) setAdminUser(null);
+      }
+      if (mounted) setLoading(false);
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        checkAdmin(session.user);
       } else {
-        setAdminUser(null);
-      }
-      setLoading(false);
-    });
-
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (session?.user) {
-        const { data } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', session.user.id)
-          .eq('role', 'admin')
-          .maybeSingle();
-        if (data) {
-          setAdminUser(session.user);
-        } else {
+        if (mounted) {
           setAdminUser(null);
+          setLoading(false);
         }
       }
-      setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        checkAdmin(session.user);
+      } else if (mounted) {
+        setLoading(false);
+      }
+    }).catch(() => {
+      if (mounted) setLoading(false);
+    });
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const login = async (email, password) => {
