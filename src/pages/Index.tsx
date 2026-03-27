@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { supabase } from '../integrations/supabase/client';
 import Login from '../components/animalisten/Login';
+import AlterarSenha from '../components/animalisten/AlterarSenha';
 import Sidebar from '../components/animalisten/Sidebar';
 import Dashboard from '../components/animalisten/Dashboard';
 import Prontuario from '../components/animalisten/Prontuario';
@@ -14,16 +16,19 @@ import { useTutores } from '../hooks/useTutores';
 
 function Index() {
   const [user, setUser] = useState(null);
+  const [checkingSession, setCheckingSession] = useState(true);
   const [currentPage, setCurrentPage] = useState('dashboard');
   const [selectedProntuario, setSelectedProntuario] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const assinanteId = user?.assinante_id;
 
   const {
     prontuarios,
     isLoading: loadingProntuarios,
     saveProntuario,
     deleteProntuario,
-  } = useProntuarios();
+  } = useProntuarios(assinanteId);
 
   const {
     internacoes,
@@ -34,7 +39,7 @@ function Index() {
     addRegistro,
     updateRegistro,
     deleteRegistro,
-  } = useInternacoes();
+  } = useInternacoes(assinanteId);
 
   const {
     tutores,
@@ -43,16 +48,76 @@ function Index() {
     deleteTutor,
     savePaciente,
     deletePaciente,
-  } = useTutores();
+  } = useTutores(assinanteId);
+
+  // Check existing session on mount
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_OUT') {
+        setUser(null);
+        setCheckingSession(false);
+        return;
+      }
+      if (session?.user && !user) {
+        // Restore session
+        const { data: assinante } = await supabase
+          .from('assinantes')
+          .select('*')
+          .eq('user_id', session.user.id)
+          .maybeSingle();
+
+        if (assinante && assinante.status === 'ativo') {
+          setUser({
+            id: session.user.id,
+            nome: assinante.nome,
+            email: assinante.email,
+            crmv: assinante.crmv,
+            assinante_id: assinante.id,
+            senha_alterada: assinante.senha_alterada,
+          });
+        }
+      }
+      setCheckingSession(false);
+    });
+
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (session?.user) {
+        const { data: assinante } = await supabase
+          .from('assinantes')
+          .select('*')
+          .eq('user_id', session.user.id)
+          .maybeSingle();
+
+        if (assinante && assinante.status === 'ativo') {
+          setUser({
+            id: session.user.id,
+            nome: assinante.nome,
+            email: assinante.email,
+            crmv: assinante.crmv,
+            assinante_id: assinante.id,
+            senha_alterada: assinante.senha_alterada,
+          });
+        }
+      }
+      setCheckingSession(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleLogin = (userData) => {
     setUser(userData);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     setUser(null);
     setCurrentPage('dashboard');
     setSelectedProntuario(null);
+  };
+
+  const handlePasswordChanged = () => {
+    setUser((prev) => ({ ...prev, senha_alterada: true }));
   };
 
   const handleNavigate = (page) => {
@@ -71,8 +136,24 @@ function Index() {
     await saveProntuario(prontuarioData);
   };
 
+  if (checkingSession) {
+    return (
+      <div className="login-page">
+        <div className="empty-state">
+          <div className="spinner" />
+          <p>Carregando...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (!user) {
     return <Login onLogin={handleLogin} />;
+  }
+
+  // Force password change on first login
+  if (!user.senha_alterada) {
+    return <AlterarSenha onSuccess={handlePasswordChanged} />;
   }
 
   const isLoading = loadingProntuarios || loadingInternacoes || loadingTutores;
