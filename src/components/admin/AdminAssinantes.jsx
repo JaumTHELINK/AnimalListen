@@ -47,7 +47,17 @@ export default function AdminAssinantes() {
       const payload = { ...form };
       if (!payload.plano_id) payload.plano_id = null;
       if (!payload.assinatura_inicio) payload.assinatura_inicio = null;
-      if (!payload.assinatura_fim) payload.assinatura_fim = null;
+      // Auto-calculate end date based on plan duration
+      if (payload.plano_id && payload.assinatura_inicio) {
+        const plano = planos.find((p) => p.id === payload.plano_id);
+        if (plano) {
+          const inicio = new Date(payload.assinatura_inicio);
+          inicio.setDate(inicio.getDate() + plano.duracao_dias);
+          payload.assinatura_fim = inicio.toISOString();
+        }
+      } else {
+        payload.assinatura_fim = null;
+      }
       await saveAssinante(payload);
       setEditing(null);
       toast.success('Assinante salvo!');
@@ -149,8 +159,8 @@ export default function AdminAssinantes() {
               <input type="date" value={form.assinatura_inicio} onChange={(e) => setForm({ ...form, assinatura_inicio: e.target.value })} />
             </div>
             <div className="admin-field">
-              <label>Fim da Assinatura</label>
-              <input type="date" value={form.assinatura_fim} onChange={(e) => setForm({ ...form, assinatura_fim: e.target.value })} />
+              <label>Fim da Assinatura (automático)</label>
+              <input type="date" value={form.plano_id && form.assinatura_inicio ? (() => { const plano = planos.find(p => p.id === form.plano_id); if (!plano) return ''; const d = new Date(form.assinatura_inicio); d.setDate(d.getDate() + plano.duracao_dias); return d.toISOString().slice(0, 10); })() : form.assinatura_fim || ''} disabled className="admin-input-disabled" />
             </div>
             <div className="admin-field">
               <label>Status</label>
