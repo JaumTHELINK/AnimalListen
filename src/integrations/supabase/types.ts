@@ -24,8 +24,10 @@ export type Database = {
           id: string
           nome: string
           plano_id: string | null
+          senha_alterada: boolean
           status: string
           telefone: string | null
+          user_id: string | null
         }
         Insert: {
           assinatura_fim?: string | null
@@ -36,8 +38,10 @@ export type Database = {
           id?: string
           nome: string
           plano_id?: string | null
+          senha_alterada?: boolean
           status?: string
           telefone?: string | null
+          user_id?: string | null
         }
         Update: {
           assinatura_fim?: string | null
@@ -48,8 +52,10 @@ export type Database = {
           id?: string
           nome?: string
           plano_id?: string | null
+          senha_alterada?: boolean
           status?: string
           telefone?: string | null
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -107,6 +113,7 @@ export type Database = {
           animal_nome: string | null
           animal_peso: number | null
           animal_raca: string | null
+          assinante_id: string | null
           created_at: string
           data_internacao: string | null
           foto: string | null
@@ -124,6 +131,7 @@ export type Database = {
           animal_nome?: string | null
           animal_peso?: number | null
           animal_raca?: string | null
+          assinante_id?: string | null
           created_at?: string
           data_internacao?: string | null
           foto?: string | null
@@ -141,6 +149,7 @@ export type Database = {
           animal_nome?: string | null
           animal_peso?: number | null
           animal_raca?: string | null
+          assinante_id?: string | null
           created_at?: string
           data_internacao?: string | null
           foto?: string | null
@@ -151,7 +160,15 @@ export type Database = {
           tutor_nome?: string | null
           tutor_telefone?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "internacoes_assinante_id_fkey"
+            columns: ["assinante_id"]
+            isOneToOne: false
+            referencedRelation: "assinantes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       pacientes: {
         Row: {
@@ -262,6 +279,7 @@ export type Database = {
           animal_porte: string | null
           animal_raca: string | null
           animal_sexo: string | null
+          assinante_id: string | null
           comportamento: string[] | null
           created_at: string
           data_atendimento: string | null
@@ -301,6 +319,7 @@ export type Database = {
           animal_porte?: string | null
           animal_raca?: string | null
           animal_sexo?: string | null
+          assinante_id?: string | null
           comportamento?: string[] | null
           created_at?: string
           data_atendimento?: string | null
@@ -340,6 +359,7 @@ export type Database = {
           animal_porte?: string | null
           animal_raca?: string | null
           animal_sexo?: string | null
+          assinante_id?: string | null
           comportamento?: string[] | null
           created_at?: string
           data_atendimento?: string | null
@@ -366,10 +386,19 @@ export type Database = {
           tutor_nome?: string | null
           tutor_telefone?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "prontuarios_assinante_id_fkey"
+            columns: ["assinante_id"]
+            isOneToOne: false
+            referencedRelation: "assinantes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       tutores: {
         Row: {
+          assinante_id: string | null
           cpf: string | null
           created_at: string
           email: string | null
@@ -380,6 +409,7 @@ export type Database = {
           telefone: string | null
         }
         Insert: {
+          assinante_id?: string | null
           cpf?: string | null
           created_at?: string
           email?: string | null
@@ -390,6 +420,7 @@ export type Database = {
           telefone?: string | null
         }
         Update: {
+          assinante_id?: string | null
           cpf?: string | null
           created_at?: string
           email?: string | null
@@ -399,7 +430,15 @@ export type Database = {
           observacoes?: string | null
           telefone?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "tutores_assinante_id_fkey"
+            columns: ["assinante_id"]
+            isOneToOne: false
+            referencedRelation: "assinantes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
@@ -424,6 +463,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_current_assinante_id: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
