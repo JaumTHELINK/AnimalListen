@@ -14,6 +14,53 @@ export type Database = {
   }
   public: {
     Tables: {
+      assinantes: {
+        Row: {
+          assinatura_fim: string | null
+          assinatura_inicio: string | null
+          created_at: string
+          crmv: string | null
+          email: string | null
+          id: string
+          nome: string
+          plano_id: string | null
+          status: string
+          telefone: string | null
+        }
+        Insert: {
+          assinatura_fim?: string | null
+          assinatura_inicio?: string | null
+          created_at?: string
+          crmv?: string | null
+          email?: string | null
+          id?: string
+          nome: string
+          plano_id?: string | null
+          status?: string
+          telefone?: string | null
+        }
+        Update: {
+          assinatura_fim?: string | null
+          assinatura_inicio?: string | null
+          created_at?: string
+          crmv?: string | null
+          email?: string | null
+          id?: string
+          nome?: string
+          plano_id?: string | null
+          status?: string
+          telefone?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assinantes_plano_id_fkey"
+            columns: ["plano_id"]
+            isOneToOne: false
+            referencedRelation: "planos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       internacao_registros: {
         Row: {
           created_at: string
@@ -171,6 +218,36 @@ export type Database = {
           },
         ]
       }
+      planos: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          descricao: string | null
+          duracao_dias: number
+          id: string
+          nome: string
+          preco: number
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          descricao?: string | null
+          duracao_dias?: number
+          id?: string
+          nome: string
+          preco?: number
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          descricao?: string | null
+          duracao_dias?: number
+          id?: string
+          nome?: string
+          preco?: number
+        }
+        Relationships: []
+      }
       prontuarios: {
         Row: {
           animal_alergias: string | null
@@ -324,15 +401,39 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "veterinario"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -459,6 +560,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "veterinario"],
+    },
   },
 } as const
