@@ -52,57 +52,61 @@ function Index() {
 
   // Check existing session on mount
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    let mounted = true;
+
+    const restoreUser = async (authUser) => {
+      try {
+        const { data: assinante } = await supabase
+          .from('assinantes')
+          .select('*')
+          .eq('user_id', authUser.id)
+          .maybeSingle();
+
+        if (mounted && assinante && assinante.status === 'ativo') {
+          setUser({
+            id: authUser.id,
+            nome: assinante.nome,
+            email: assinante.email,
+            crmv: assinante.crmv,
+            assinante_id: assinante.id,
+            senha_alterada: assinante.senha_alterada,
+          });
+        }
+      } catch {
+        // ignore
+      }
+      if (mounted) setCheckingSession(false);
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT') {
-        setUser(null);
-        setCheckingSession(false);
+        if (mounted) {
+          setUser(null);
+          setCheckingSession(false);
+        }
         return;
       }
       if (session?.user && !user) {
-        // Restore session
-        const { data: assinante } = await supabase
-          .from('assinantes')
-          .select('*')
-          .eq('user_id', session.user.id)
-          .maybeSingle();
-
-        if (assinante && assinante.status === 'ativo') {
-          setUser({
-            id: session.user.id,
-            nome: assinante.nome,
-            email: assinante.email,
-            crmv: assinante.crmv,
-            assinante_id: assinante.id,
-            senha_alterada: assinante.senha_alterada,
-          });
-        }
+        restoreUser(session.user);
+      } else if (!session?.user) {
+        if (mounted) setCheckingSession(false);
       }
-      setCheckingSession(false);
     });
 
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        const { data: assinante } = await supabase
-          .from('assinantes')
-          .select('*')
-          .eq('user_id', session.user.id)
-          .maybeSingle();
-
-        if (assinante && assinante.status === 'ativo') {
-          setUser({
-            id: session.user.id,
-            nome: assinante.nome,
-            email: assinante.email,
-            crmv: assinante.crmv,
-            assinante_id: assinante.id,
-            senha_alterada: assinante.senha_alterada,
-          });
-        }
+        restoreUser(session.user);
+      } else if (mounted) {
+        setCheckingSession(false);
       }
-      setCheckingSession(false);
+    }).catch(() => {
+      if (mounted) setCheckingSession(false);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const handleLogin = (userData) => {
