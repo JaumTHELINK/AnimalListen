@@ -1,11 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
-export function useProntuarios() {
+export function useProntuarios(assinanteId) {
   const queryClient = useQueryClient();
 
   const { data: prontuarios = [], isLoading, error } = useQuery({
-    queryKey: ['prontuarios'],
+    queryKey: ['prontuarios', assinanteId],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('prontuarios')
@@ -14,12 +14,14 @@ export function useProntuarios() {
       if (error) throw error;
       return data;
     },
+    enabled: !!assinanteId,
   });
 
   const saveMutation = useMutation({
     mutationFn: async (prontuario) => {
       const { id, ...rest } = prontuario;
-      // If id looks like a UUID (from DB), update; otherwise insert
+      // Always include assinante_id
+      rest.assinante_id = assinanteId;
       if (id && typeof id === 'string' && id.includes('-')) {
         const { data, error } = await supabase
           .from('prontuarios')
@@ -30,7 +32,6 @@ export function useProntuarios() {
         if (error) throw error;
         return data;
       } else {
-        // Insert new — remove the id field (let DB generate UUID)
         const { data, error } = await supabase
           .from('prontuarios')
           .insert(rest)
@@ -41,7 +42,7 @@ export function useProntuarios() {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['prontuarios'] });
+      queryClient.invalidateQueries({ queryKey: ['prontuarios', assinanteId] });
     },
   });
 
@@ -54,7 +55,7 @@ export function useProntuarios() {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['prontuarios'] });
+      queryClient.invalidateQueries({ queryKey: ['prontuarios', assinanteId] });
     },
   });
 

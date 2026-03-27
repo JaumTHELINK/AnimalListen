@@ -1,11 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
-export function useTutores() {
+export function useTutores(assinanteId) {
   const queryClient = useQueryClient();
 
   const { data: tutores = [], isLoading } = useQuery({
-    queryKey: ['tutores'],
+    queryKey: ['tutores', assinanteId],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('tutores')
@@ -14,11 +14,13 @@ export function useTutores() {
       if (error) throw error;
       return data;
     },
+    enabled: !!assinanteId,
   });
 
   const saveTutorMutation = useMutation({
     mutationFn: async (tutor) => {
       const { id, pacientes: _, ...tutorData } = tutor;
+      tutorData.assinante_id = assinanteId;
       if (id) {
         const { data, error } = await supabase
           .from('tutores')
@@ -38,7 +40,7 @@ export function useTutores() {
         return data;
       }
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tutores'] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tutores', assinanteId] }),
   });
 
   const deleteTutorMutation = useMutation({
@@ -46,7 +48,7 @@ export function useTutores() {
       const { error } = await supabase.from('tutores').delete().eq('id', id);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tutores'] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tutores', assinanteId] }),
   });
 
   const savePacienteMutation = useMutation({
@@ -71,7 +73,7 @@ export function useTutores() {
         return data;
       }
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tutores'] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tutores', assinanteId] }),
   });
 
   const deletePacienteMutation = useMutation({
@@ -79,7 +81,7 @@ export function useTutores() {
       const { error } = await supabase.from('pacientes').delete().eq('id', id);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tutores'] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tutores', assinanteId] }),
   });
 
   return {

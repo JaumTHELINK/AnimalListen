@@ -1,18 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
-export function useInternacoes() {
+export function useInternacoes(assinanteId) {
   const queryClient = useQueryClient();
 
   const { data: internacoes = [], isLoading, error } = useQuery({
-    queryKey: ['internacoes'],
+    queryKey: ['internacoes', assinanteId],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('internacoes')
         .select('*, internacao_registros(*)')
         .order('data_internacao', { ascending: false });
       if (error) throw error;
-      // Map internacao_registros to "registros" for component compatibility
       return data.map((i) => ({
         ...i,
         registros: (i.internacao_registros || []).sort(
@@ -20,11 +19,13 @@ export function useInternacoes() {
         ),
       }));
     },
+    enabled: !!assinanteId,
   });
 
   const addInternacaoMutation = useMutation({
     mutationFn: async (internacao) => {
       const { registros, ...rest } = internacao;
+      rest.assinante_id = assinanteId;
       const { data, error } = await supabase
         .from('internacoes')
         .insert(rest)
@@ -34,7 +35,7 @@ export function useInternacoes() {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['internacoes'] });
+      queryClient.invalidateQueries({ queryKey: ['internacoes', assinanteId] });
     },
   });
 
@@ -47,7 +48,7 @@ export function useInternacoes() {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['internacoes'] });
+      queryClient.invalidateQueries({ queryKey: ['internacoes', assinanteId] });
     },
   });
 
@@ -60,7 +61,7 @@ export function useInternacoes() {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['internacoes'] });
+      queryClient.invalidateQueries({ queryKey: ['internacoes', assinanteId] });
     },
   });
 
@@ -75,7 +76,7 @@ export function useInternacoes() {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['internacoes'] });
+      queryClient.invalidateQueries({ queryKey: ['internacoes', assinanteId] });
     },
   });
 
@@ -88,7 +89,7 @@ export function useInternacoes() {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['internacoes'] });
+      queryClient.invalidateQueries({ queryKey: ['internacoes', assinanteId] });
     },
   });
 
@@ -101,7 +102,7 @@ export function useInternacoes() {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['internacoes'] });
+      queryClient.invalidateQueries({ queryKey: ['internacoes', assinanteId] });
     },
   });
 

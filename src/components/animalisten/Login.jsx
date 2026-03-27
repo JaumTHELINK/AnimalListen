@@ -1,14 +1,60 @@
 import { useState } from 'react';
 import { LogIn } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 export default function Login({ onLogin }) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Login estético — entra direto sem validação
-    onLogin({ nome: 'Dr. Veterinário', email: email || 'admin@animalisten.com', crmv: 'CRMV-CE 12345' });
+    if (!email || !senha) {
+      toast.error('Preencha email e senha');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password: senha,
+      });
+      if (error) throw error;
+
+      // Check if user is a veterinario (assinante)
+      const { data: assinante, error: assinanteError } = await supabase
+        .from('assinantes')
+        .select('*')
+        .eq('user_id', data.user.id)
+        .maybeSingle();
+
+      if (!assinante) {
+        await supabase.auth.signOut();
+        toast.error('Acesso negado. Conta não vinculada a um consultório.');
+        return;
+      }
+
+      if (assinante.status === 'suspenso' || assinante.status === 'expirado') {
+        await supabase.auth.signOut();
+        toast.error('Sua assinatura está suspensa. Entre em contato com o administrador.');
+        return;
+      }
+
+      onLogin({
+        id: data.user.id,
+        nome: assinante.nome,
+        email: assinante.email,
+        crmv: assinante.crmv,
+        assinante_id: assinante.id,
+        senha_alterada: assinante.senha_alterada,
+      });
+    } catch (err) {
+      toast.error('Erro no login: ' + err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -29,6 +75,7 @@ export default function Login({ onLogin }) {
               placeholder="Digite seu email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
 
@@ -40,12 +87,13 @@ export default function Login({ onLogin }) {
               placeholder="••••••••"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
+              required
             />
           </div>
 
-          <button type="submit" className="login-btn">
+          <button type="submit" className="login-btn" disabled={loading}>
             <LogIn size={20} />
-            Entrar
+            {loading ? 'Entrando...' : 'Entrar'}
           </button>
         </form>
       </div>

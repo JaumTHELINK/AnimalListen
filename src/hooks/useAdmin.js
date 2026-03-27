@@ -137,13 +137,28 @@ export function useAssinantes() {
     mutationFn: async (assinante) => {
       const { id, planos: _, ...rest } = assinante;
       if (id) {
+        // Update existing - direct DB update
         const { data, error } = await supabase.from('assinantes').update(rest).eq('id', id).select('*, planos(*)').single();
         if (error) throw error;
         return data;
       } else {
-        const { data, error } = await supabase.from('assinantes').insert(rest).select('*, planos(*)').single();
-        if (error) throw error;
-        return data;
+        // New assinante - use edge function to create auth user + assinante
+        const { data: { session } } = await supabase.auth.getSession();
+        const res = await fetch(
+          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-assinante-user`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session.access_token}`,
+              'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+            },
+            body: JSON.stringify(rest),
+          }
+        );
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.error || 'Erro ao criar assinante');
+        return result.assinante;
       }
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['assinantes'] }),
