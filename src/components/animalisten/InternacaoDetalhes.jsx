@@ -129,7 +129,7 @@ export default function InternacaoDetalhes({
             )}
             <div style={{ minWidth: 0 }}>
               <h2 style={{ marginBottom: 0 }}>{internacao.animal_nome}</h2>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>
                 {internacao.animal_especie} • {internacao.animal_raca} • {internacao.animal_peso}kg •
                 Internado em {new Date(internacao.data_internacao).toLocaleDateString('pt-BR')}
               </p>
@@ -196,7 +196,7 @@ export default function InternacaoDetalhes({
             bpm: { bg: '#fef2f2', icon: '#ef4444' },
             temperatura: { bg: '#fffbeb', icon: '#f59e0b' },
             alimentacao: { bg: '#f0fdf4', icon: '#22c55e' },
-            medicacao: { bg: 'var(--primary-50)', icon: 'var(--primary)' },
+            medicacao: { bg: 'rgba(37, 99, 235, 0.08)', icon: 'var(--color-primary)' },
             hidratacao: { bg: '#eff6ff', icon: '#3b82f6' },
           };
 
@@ -209,7 +209,7 @@ export default function InternacaoDetalhes({
                 }}>
                   <Icon size={16} style={{ color: colors[tipo].icon }} />
                 </div>
-                <span className="text-xs font-bold" style={{ color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--color-text-muted)', textTransform: 'uppercase' }}>
                   {tipoRegistroLabels[tipo]}
                 </span>
               </div>
@@ -217,7 +217,7 @@ export default function InternacaoDetalhes({
                 {last ? (tipo === 'temperatura' ? `${last.valor}°C` : last.valor) : '—'}
               </div>
               {last && (
-                <p className="text-xs" style={{ color: 'var(--text-muted)', marginTop: '4px' }}>
+                  <p className="text-xs" style={{ color: 'var(--color-text-muted)', marginTop: '4px' }}>
                   {formatTime(last.hora)} • {last.notas || 'Sem notas'}
                 </p>
               )}
@@ -230,10 +230,10 @@ export default function InternacaoDetalhes({
       <div className="card">
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-2">
-            <Activity size={18} style={{ color: 'var(--primary)' }} />
+            <Activity size={18} style={{ color: 'var(--color-primary)' }} />
             <h3 style={{ fontWeight: 700, fontSize: '1.05rem' }}>Histórico de Registros</h3>
           </div>
-          <span className="text-sm" style={{ color: 'var(--text-muted)' }}>
+          <span className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
             {internacao.registros.length} registros
           </span>
         </div>
@@ -280,7 +280,7 @@ export default function InternacaoDetalhes({
                       <>
                         <div className="flex justify-between items-center">
                           <div className="flex items-center gap-2 mb-1">
-                            <Icon size={14} style={{ color: 'var(--primary)' }} />
+                            <Icon size={14} style={{ color: 'var(--color-primary)' }} />
                             <span className="font-bold text-sm">{tipoRegistroLabels[reg.tipo]}</span>
                             <span className="tag tag-blue">{reg.valor}</span>
                           </div>
@@ -302,7 +302,7 @@ export default function InternacaoDetalhes({
                           </div>
                         </div>
                         {reg.notas && (
-                          <p className="text-sm" style={{ color: 'var(--text-secondary)', marginTop: '4px' }}>
+                          <p className="text-sm" style={{ color: 'var(--color-text-secondary)', marginTop: '4px' }}>
                             {reg.notas}
                           </p>
                         )}
@@ -421,8 +421,8 @@ export default function InternacaoDetalhes({
                   <img src={pacienteForm.foto} alt="Foto" className="photo-preview" />
                 ) : (
                   <>
-                    <Camera size={28} style={{ color: 'var(--text-muted)' }} />
-                    <span className="text-xs" style={{ color: 'var(--text-muted)', marginTop: '4px' }}>
+                    <Camera size={28} style={{ color: 'var(--color-text-muted)' }} />
+                    <span className="text-xs" style={{ color: 'var(--color-text-muted)', marginTop: '4px' }}>
                       Adicionar foto
                     </span>
                   </>

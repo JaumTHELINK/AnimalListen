@@ -51,7 +51,7 @@ export default function ProntuarioHub({ prontuarios, onNavigate, onSelectProntua
         <div
           className="stat-card card-clickable"
           onClick={() => setTab('abertos')}
-          style={tab === 'abertos' ? { borderColor: 'var(--warning)', borderWidth: '2px' } : {}}
+          style={tab === 'abertos' ? { borderColor: 'var(--color-warning)', borderWidth: '2px' } : {}}
         >
           <div className="stat-icon yellow"><Clock size={22} /></div>
           <div>
@@ -62,7 +62,7 @@ export default function ProntuarioHub({ prontuarios, onNavigate, onSelectProntua
         <div
           className="stat-card card-clickable"
           onClick={() => setTab('historico')}
-          style={tab === 'historico' ? { borderColor: 'var(--primary)', borderWidth: '2px' } : {}}
+          style={tab === 'historico' ? { borderColor: 'var(--color-primary)', borderWidth: '2px' } : {}}
         >
           <div className="stat-icon green"><History size={22} /></div>
           <div>
@@ -75,7 +75,7 @@ export default function ProntuarioHub({ prontuarios, onNavigate, onSelectProntua
       {/* Search */}
       <div className="card mb-4" style={{ padding: '12px 20px' }}>
         <div className="flex items-center gap-3">
-          <Search size={18} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
+          <Search size={18} style={{ color: 'var(--color-text-muted)', flexShrink: 0 }} />
           <input
             type="text"
             className="form-input"
@@ -110,27 +110,27 @@ export default function ProntuarioHub({ prontuarios, onNavigate, onSelectProntua
               <div className="flex items-center gap-2">
                 <div className="card-avatar">
                   {p.status === 'incompleto' ? (
-                    <AlertCircle size={18} style={{ color: 'var(--warning)' }} />
+                      <AlertCircle size={18} style={{ color: 'var(--color-warning)' }} />
                   ) : (
-                    <PawPrint size={18} style={{ color: 'var(--primary)' }} />
+                      <PawPrint size={18} style={{ color: 'var(--color-primary)' }} />
                   )}
                 </div>
                 <div>
                   <h4 style={{ fontWeight: 700, fontSize: '0.95rem' }}>{p.animal_nome || 'Sem nome'}</h4>
-                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
+                  <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
                     #{p.numero_prontuario}
                   </p>
                 </div>
               </div>
-              <ChevronRight size={18} style={{ color: 'var(--text-muted)' }} />
+                <ChevronRight size={18} style={{ color: 'var(--color-text-muted)' }} />
             </div>
 
-            <div style={{ margin: '12px 0', padding: '10px 0', borderTop: '1px solid var(--border-light)', borderBottom: '1px solid var(--border-light)' }}>
-              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+            <div style={{ margin: '12px 0', padding: '10px 0', borderTop: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}>
+              <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
                 <strong>Tutor:</strong> {p.tutor_nome || '—'}
               </p>
               {p.queixa_principal && (
-                <p className="text-sm mt-2" style={{ color: 'var(--text-secondary)' }}>
+                <p className="text-sm mt-2" style={{ color: 'var(--color-text-secondary)' }}>
                   <strong>Queixa:</strong> {p.queixa_principal}
                 </p>
               )}
@@ -142,7 +142,7 @@ export default function ProntuarioHub({ prontuarios, onNavigate, onSelectProntua
               ) : (
                 <span className="tag tag-green">Completo</span>
               )}
-              <span className="text-xs" style={{ color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
+              <span className="text-xs" style={{ color: 'var(--color-text-muted)', whiteSpace: 'nowrap' }}>
                 {formatDate(p.data_atendimento)}
               </span>
             </div>

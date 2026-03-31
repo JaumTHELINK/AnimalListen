@@ -385,7 +385,7 @@ export default function Prontuario({ prontuario, onBack, onSave, onSelectProntua
             <h2 style={{ fontSize: '1.1rem', fontWeight: 700 }}>
               Prontuário #{numeroProntuario}
             </h2>
-            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
+              <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
               Registro clínico veterinário
             </p>
           </div>
@@ -416,7 +416,7 @@ export default function Prontuario({ prontuario, onBack, onSave, onSelectProntua
             <Printer size={14} />
             <span className="btn-label">Imprimir</span>
           </button>
-          <button className="btn btn-outline btn-sm" onClick={() => handleSave('incompleto')} style={{ borderColor: 'var(--warning)', color: 'var(--warning)' }}>
+          <button className="btn btn-outline btn-sm" onClick={() => handleSave('incompleto')} style={{ borderColor: 'var(--color-warning)', color: 'var(--color-warning)' }}>
             <Clock size={14} />
             <span className="btn-label">Salvar Incompleto</span>
           </button>
@@ -466,7 +466,7 @@ export default function Prontuario({ prontuario, onBack, onSave, onSelectProntua
                 );
                 if (historico.length === 0) {
                   return (
-                    <p className="text-xs" style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '12px 0' }}>
+                      <p className="text-xs" style={{ color: 'var(--color-text-muted)', textAlign: 'center', padding: '12px 0' }}>
                       Nenhuma consulta anterior encontrada.
                     </p>
                   );
@@ -481,23 +481,23 @@ export default function Prontuario({ prontuario, onBack, onSave, onSelectProntua
                         title="Clique para abrir este prontuário"
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-sm font-bold" style={{ color: 'var(--primary)' }}>
+                          <span className="text-sm font-bold" style={{ color: 'var(--color-primary)' }}>
                             #{h.numero_prontuario}
                           </span>
                           <span className={`status-badge status-${h.status || 'incompleto'}`}>
                             {h.status === 'completo' ? 'Completo' : 'Incompleto'}
                           </span>
                         </div>
-                        <p className="text-xs" style={{ color: 'var(--text-muted)', marginTop: '4px' }}>
+                        <p className="text-xs" style={{ color: 'var(--color-text-muted)', marginTop: '4px' }}>
                           {h.data_atendimento ? new Date(h.data_atendimento).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' }) : 'Sem data'}
                         </p>
                         {h.queixa_principal && (
-                          <p className="text-xs" style={{ color: 'var(--text-secondary)', marginTop: '4px', fontStyle: 'italic' }}>
+                          <p className="text-xs" style={{ color: 'var(--color-text-secondary)', marginTop: '4px', fontStyle: 'italic' }}>
                             <strong>Queixa:</strong> {h.queixa_principal.substring(0, 100)}{h.queixa_principal.length > 100 ? '...' : ''}
                           </p>
                         )}
                         {h.suspeita_diagnostica && (
-                          <p className="text-xs" style={{ color: 'var(--text-secondary)', marginTop: '2px' }}>
+                          <p className="text-xs" style={{ color: 'var(--color-text-secondary)', marginTop: '2px' }}>
                             <strong>Diagnóstico:</strong> {h.suspeita_diagnostica.substring(0, 80)}{h.suspeita_diagnostica.length > 80 ? '...' : ''}
                           </p>
                         )}
@@ -507,7 +507,7 @@ export default function Prontuario({ prontuario, onBack, onSave, onSelectProntua
                               <span key={i} className="tag tag-red" style={{ fontSize: '0.65rem', padding: '1px 6px' }}>{s}</span>
                             ))}
                             {h.sintomas.length > 3 && (
-                              <span className="text-xs" style={{ color: 'var(--text-muted)' }}>+{h.sintomas.length - 3}</span>
+                              <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>+{h.sintomas.length - 3}</span>
                             )}
                           </div>
                         )}
@@ -612,7 +612,7 @@ export default function Prontuario({ prontuario, onBack, onSave, onSelectProntua
                   ))}
                 </select>
                 {pacientesDoTutor.length === 0 && (
-                  <p className="text-xs" style={{ color: 'var(--text-muted)', marginTop: '4px' }}>
+                  <p className="text-xs" style={{ color: 'var(--color-text-muted)', marginTop: '4px' }}>
                     Este tutor não tem pacientes cadastrados.
                   </p>
                 )}
