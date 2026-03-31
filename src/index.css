@@ -2295,8 +2295,6 @@ body {
     --sidebar-ring: 221 83% 53%;
   }
 }
-  background: var(--color-bg);
-}
 
 .admin-header {
   background: var(--color-surface);
