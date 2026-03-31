@@ -1,129 +1,86 @@
-import { FileText, Plus, Calendar, User, PawPrint, ChevronRight, Clock, AlertCircle, Users } from 'lucide-react';
+import { AlertCircle, Bed, FileText, Heart, Users, PawPrint } from 'lucide-react';
 
-export default function Dashboard({ prontuarios, onNavigate, onSelectProntuario }) {
-  const abertos = prontuarios.filter((p) => p.status === 'incompleto');
-  const hoje = prontuarios.filter(p => {
-    const d = new Date(p.data_atendimento);
-    const today = new Date();
-    return d.toDateString() === today.toDateString();
-  });
-
-  const formatDate = (dateStr) => {
-    if (!dateStr) return '—';
-    return new Date(dateStr).toLocaleDateString('pt-BR', {
-      day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit',
-    });
-  };
+export default function Dashboard({ prontuarios = [], tutores = [], internacoes = [], triagens = [], onNavigate, onSelectProntuario }) {
+  const triagensPendentes = triagens.filter(t => !t.atendida);
+  const internacoesAtivas = internacoes.filter(i => i.status !== 'alta');
+  const totalTutores = tutores.length;
+  const totalAnimais = tutores.reduce((acc, t) => acc + (t.pacientes?.length || 0), 0);
 
   return (
-    <div className="animate-fade">
-      <div className="page-header">
-        <h2>Dashboard</h2>
-        <p>Visão geral e atalhos rápidos</p>
-      </div>
+    <div className="dashboard">
+      <h1>Dashboard</h1>
 
-      {/* Stats */}
-      <div className="stats-grid mb-4">
-        <div className="stat-card">
-          <div className="stat-icon blue"><FileText size={22} /></div>
-          <div>
-            <div className="stat-value">{prontuarios.length}</div>
-            <div className="stat-label">Prontuários</div>
+      <div className="stats-grid">
+        <div className="stat-card stat-primary">
+          <div className="stat-icon">
+            <Users size={32} />
+          </div>
+          <div className="stat-content">
+            <div className="stat-value">{totalTutores}</div>
+            <div className="stat-label">Tutores Cadastrados</div>
           </div>
         </div>
-        <div className="stat-card">
-          <div className="stat-icon yellow"><Clock size={22} /></div>
-          <div>
-            <div className="stat-value">{abertos.length}</div>
-            <div className="stat-label">Em Aberto</div>
+
+        <div className="stat-card stat-success">
+          <div className="stat-icon">
+            <PawPrint size={32} />
           </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon green"><Calendar size={22} /></div>
-          <div>
-            <div className="stat-value">{hoje.length}</div>
-            <div className="stat-label">Hoje</div>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon red"><PawPrint size={22} /></div>
-          <div>
-            <div className="stat-value">{new Set(prontuarios.map(p => p.animal_nome)).size}</div>
+          <div className="stat-content">
+            <div className="stat-value">{totalAnimais}</div>
             <div className="stat-label">Pacientes</div>
           </div>
         </div>
-      </div>
 
-      {/* Atalhos */}
-      <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '12px' }}>Atalhos Rápidos</h3>
-      <div className="grid-3 mb-4">
-        <div className="card card-clickable" onClick={() => onNavigate('prontuario-novo')} style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          <div className="stat-icon blue"><Plus size={22} /></div>
-          <div>
-            <h4 style={{ fontWeight: 700, fontSize: '0.95rem' }}>Novo Prontuário</h4>
-            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Iniciar um atendimento</p>
+        <div className="stat-card stat-warning">
+          <div className="stat-icon">
+            <AlertCircle size={32} />
+          </div>
+          <div className="stat-content">
+            <div className="stat-value">{triagensPendentes.length}</div>
+            <div className="stat-label">Triagens Pendentes</div>
           </div>
         </div>
-        <div className="card card-clickable" onClick={() => onNavigate('tutores')} style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          <div className="stat-icon green"><Users size={22} /></div>
-          <div>
-            <h4 style={{ fontWeight: 700, fontSize: '0.95rem' }}>Novo Tutor</h4>
-            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Cadastrar tutor e animais</p>
+
+        <div className="stat-card stat-info">
+          <div className="stat-icon">
+            <Bed size={32} />
+          </div>
+          <div className="stat-content">
+            <div className="stat-value">{internacoesAtivas.length}</div>
+            <div className="stat-label">Internações Ativas</div>
           </div>
         </div>
       </div>
 
-      {/* Prontuários em aberto */}
-      <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <Clock size={16} /> Prontuários em Aberto
-      </h3>
-
-      {abertos.length > 0 ? (
-        <div className="grid-3">
-          {abertos.map((p) => (
-            <div
-              key={p.id}
-              className="card card-clickable animate-slide"
-              onClick={() => onSelectProntuario(p)}
-            >
-              <div className="flex justify-between items-center mb-2">
-                <div className="flex items-center gap-2">
-                  <div className="card-avatar">
-                    <AlertCircle size={18} style={{ color: 'var(--warning)' }} />
-                  </div>
-                  <div>
-                    <h4 style={{ fontWeight: 700, fontSize: '0.95rem' }}>{p.animal_nome || 'Sem nome'}</h4>
-                    <p className="text-xs" style={{ color: 'var(--text-muted)' }}>#{p.numero_prontuario}</p>
-                  </div>
-                </div>
-                <ChevronRight size={18} style={{ color: 'var(--text-muted)' }} />
-              </div>
-              <div style={{ margin: '12px 0', padding: '10px 0', borderTop: '1px solid var(--border-light)', borderBottom: '1px solid var(--border-light)' }}>
-                <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-                  <strong>Tutor:</strong> {p.tutor_nome || '—'}
-                </p>
-                {p.queixa_principal && (
-                  <p className="text-sm mt-2" style={{ color: 'var(--text-secondary)' }}>
-                    <strong>Queixa:</strong> {p.queixa_principal}
-                  </p>
-                )}
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="tag tag-yellow">Incompleto</span>
-                <span className="text-xs" style={{ color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
-                  {formatDate(p.data_atendimento)}
-                </span>
-              </div>
-            </div>
-          ))}
+      <div className="quick-actions">
+        <h2>Ações Rápidas</h2>
+        <div className="action-buttons">
+          <button onClick={() => onNavigate('triagem')} className="action-card">
+            <AlertCircle size={24} />
+            <span>Nova Triagem</span>
+          </button>
+          <button onClick={() => onNavigate('triagens-pendentes')} className="action-card">
+            <FileText size={24} />
+            <span>Ver Triagens</span>
+          </button>
+          <button onClick={() => onNavigate('prontuario-hub')} className="action-card">
+            <FileText size={24} />
+            <span>Prontuários</span>
+          </button>
+          <button onClick={() => onNavigate('internacao')} className="action-card">
+            <Bed size={24} />
+            <span>Internações</span>
+          </button>
+          <button onClick={() => onNavigate('tutores')} className="action-card">
+            <Users size={24} />
+            <span>Novo Tutor</span>
+          </button>
+          <button onClick={() => onNavigate('animais')} className="action-card">
+            <PawPrint size={24} />
+            <span>Animais</span>
+          </button>
         </div>
-      ) : (
-        <div className="empty-state">
-          <FileText size={48} />
-          <h3>Nenhum prontuário em aberto</h3>
-          <p>Todos os prontuários estão finalizados.</p>
-        </div>
-      )}
+      </div>
     </div>
   );
 }
