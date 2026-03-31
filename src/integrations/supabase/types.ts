@@ -119,6 +119,7 @@ export type Database = {
           foto: string | null
           id: string
           motivo: string | null
+          observacoes: string | null
           status: string
           tutor_cpf: string | null
           tutor_nome: string | null
@@ -137,6 +138,7 @@ export type Database = {
           foto?: string | null
           id?: string
           motivo?: string | null
+          observacoes?: string | null
           status?: string
           tutor_cpf?: string | null
           tutor_nome?: string | null
@@ -155,6 +157,7 @@ export type Database = {
           foto?: string | null
           id?: string
           motivo?: string | null
+          observacoes?: string | null
           status?: string
           tutor_cpf?: string | null
           tutor_nome?: string | null
@@ -170,11 +173,59 @@ export type Database = {
           },
         ]
       }
+      paciente_pesos: {
+        Row: {
+          assinante_id: string | null
+          condicao_corporal: string | null
+          created_at: string
+          data: string
+          id: string
+          paciente_id: string
+          peso: number
+        }
+        Insert: {
+          assinante_id?: string | null
+          condicao_corporal?: string | null
+          created_at?: string
+          data: string
+          id?: string
+          paciente_id: string
+          peso: number
+        }
+        Update: {
+          assinante_id?: string | null
+          condicao_corporal?: string | null
+          created_at?: string
+          data?: string
+          id?: string
+          paciente_id?: string
+          peso?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "paciente_pesos_assinante_id_fkey"
+            columns: ["assinante_id"]
+            isOneToOne: false
+            referencedRelation: "assinantes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "paciente_pesos_paciente_id_fkey"
+            columns: ["paciente_id"]
+            isOneToOne: false
+            referencedRelation: "pacientes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pacientes: {
         Row: {
           alergias: string | null
           castrado: boolean | null
+          condicao_corporal: string | null
+          cor: string | null
           created_at: string
+          data_nascimento: string | null
           doenca_cronica: string | null
           especie: string | null
           foto: string | null
@@ -187,12 +238,16 @@ export type Database = {
           porte: string | null
           raca: string | null
           sexo: string | null
+          temperamento: string | null
           tutor_id: string
         }
         Insert: {
           alergias?: string | null
           castrado?: boolean | null
+          condicao_corporal?: string | null
+          cor?: string | null
           created_at?: string
+          data_nascimento?: string | null
           doenca_cronica?: string | null
           especie?: string | null
           foto?: string | null
@@ -205,12 +260,16 @@ export type Database = {
           porte?: string | null
           raca?: string | null
           sexo?: string | null
+          temperamento?: string | null
           tutor_id: string
         }
         Update: {
           alergias?: string | null
           castrado?: boolean | null
+          condicao_corporal?: string | null
+          cor?: string | null
           created_at?: string
+          data_nascimento?: string | null
           doenca_cronica?: string | null
           especie?: string | null
           foto?: string | null
@@ -223,6 +282,7 @@ export type Database = {
           porte?: string | null
           raca?: string | null
           sexo?: string | null
+          temperamento?: string | null
           tutor_id?: string
         }
         Relationships: [
@@ -280,31 +340,44 @@ export type Database = {
           animal_raca: string | null
           animal_sexo: string | null
           assinante_id: string | null
+          atualizacao_vacinal: string | null
           comportamento: string[] | null
           created_at: string
           data_atendimento: string | null
+          diagnostico_definitivo: string | null
+          evolucao_clinica: string | null
           exames_solicitados: string[] | null
           frequencia_cardiaca: number | null
           frequencia_respiratoria: number | null
+          glicose: number | null
+          hidratacao: string | null
           historico_doenca: string | null
           id: string
+          linfonodos: string | null
           medicamentos: string[] | null
           mucosas: string | null
           numero_prontuario: string
           observacoes_gerais: string | null
+          outros_achados: string | null
+          paciente_id: string | null
           palpacao_abdominal: string | null
+          procedimentos_realizados: string | null
           queixa_principal: string | null
           recomendacoes: string | null
           sintomas: string[] | null
           status: string
           suspeita_diagnostica: string | null
           temperatura: number | null
+          tempo_preenchimento_capilar: string | null
+          termo_consentimento_assinado: boolean | null
           tratamento_prescrito: string | null
+          triagem_id: string | null
           tutor_cpf: string | null
           tutor_email: string | null
           tutor_endereco: string | null
           tutor_nome: string | null
           tutor_telefone: string | null
+          veterinario_crmv: string | null
         }
         Insert: {
           animal_alergias?: string | null
@@ -320,31 +393,44 @@ export type Database = {
           animal_raca?: string | null
           animal_sexo?: string | null
           assinante_id?: string | null
+          atualizacao_vacinal?: string | null
           comportamento?: string[] | null
           created_at?: string
           data_atendimento?: string | null
+          diagnostico_definitivo?: string | null
+          evolucao_clinica?: string | null
           exames_solicitados?: string[] | null
           frequencia_cardiaca?: number | null
           frequencia_respiratoria?: number | null
+          glicose?: number | null
+          hidratacao?: string | null
           historico_doenca?: string | null
           id?: string
+          linfonodos?: string | null
           medicamentos?: string[] | null
           mucosas?: string | null
           numero_prontuario: string
           observacoes_gerais?: string | null
+          outros_achados?: string | null
+          paciente_id?: string | null
           palpacao_abdominal?: string | null
+          procedimentos_realizados?: string | null
           queixa_principal?: string | null
           recomendacoes?: string | null
           sintomas?: string[] | null
           status?: string
           suspeita_diagnostica?: string | null
           temperatura?: number | null
+          tempo_preenchimento_capilar?: string | null
+          termo_consentimento_assinado?: boolean | null
           tratamento_prescrito?: string | null
+          triagem_id?: string | null
           tutor_cpf?: string | null
           tutor_email?: string | null
           tutor_endereco?: string | null
           tutor_nome?: string | null
           tutor_telefone?: string | null
+          veterinario_crmv?: string | null
         }
         Update: {
           animal_alergias?: string | null
@@ -360,31 +446,44 @@ export type Database = {
           animal_raca?: string | null
           animal_sexo?: string | null
           assinante_id?: string | null
+          atualizacao_vacinal?: string | null
           comportamento?: string[] | null
           created_at?: string
           data_atendimento?: string | null
+          diagnostico_definitivo?: string | null
+          evolucao_clinica?: string | null
           exames_solicitados?: string[] | null
           frequencia_cardiaca?: number | null
           frequencia_respiratoria?: number | null
+          glicose?: number | null
+          hidratacao?: string | null
           historico_doenca?: string | null
           id?: string
+          linfonodos?: string | null
           medicamentos?: string[] | null
           mucosas?: string | null
           numero_prontuario?: string
           observacoes_gerais?: string | null
+          outros_achados?: string | null
+          paciente_id?: string | null
           palpacao_abdominal?: string | null
+          procedimentos_realizados?: string | null
           queixa_principal?: string | null
           recomendacoes?: string | null
           sintomas?: string[] | null
           status?: string
           suspeita_diagnostica?: string | null
           temperatura?: number | null
+          tempo_preenchimento_capilar?: string | null
+          termo_consentimento_assinado?: boolean | null
           tratamento_prescrito?: string | null
+          triagem_id?: string | null
           tutor_cpf?: string | null
           tutor_email?: string | null
           tutor_endereco?: string | null
           tutor_nome?: string | null
           tutor_telefone?: string | null
+          veterinario_crmv?: string | null
         }
         Relationships: [
           {
@@ -392,6 +491,68 @@ export type Database = {
             columns: ["assinante_id"]
             isOneToOne: false
             referencedRelation: "assinantes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prontuarios_paciente_id_fkey"
+            columns: ["paciente_id"]
+            isOneToOne: false
+            referencedRelation: "pacientes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prontuarios_triagem_id_fkey"
+            columns: ["triagem_id"]
+            isOneToOne: false
+            referencedRelation: "triagens"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      triagens: {
+        Row: {
+          assinante_id: string | null
+          atendida: boolean
+          aviso_profissional: string | null
+          created_at: string
+          id: string
+          paciente_id: string
+          prioridade: string
+          queixa_principal: string
+        }
+        Insert: {
+          assinante_id?: string | null
+          atendida?: boolean
+          aviso_profissional?: string | null
+          created_at?: string
+          id?: string
+          paciente_id: string
+          prioridade?: string
+          queixa_principal: string
+        }
+        Update: {
+          assinante_id?: string | null
+          atendida?: boolean
+          aviso_profissional?: string | null
+          created_at?: string
+          id?: string
+          paciente_id?: string
+          prioridade?: string
+          queixa_principal?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "triagens_assinante_id_fkey"
+            columns: ["assinante_id"]
+            isOneToOne: false
+            referencedRelation: "assinantes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "triagens_paciente_id_fkey"
+            columns: ["paciente_id"]
+            isOneToOne: false
+            referencedRelation: "pacientes"
             referencedColumns: ["id"]
           },
         ]
@@ -457,6 +618,57 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      vacinas: {
+        Row: {
+          assinante_id: string | null
+          created_at: string
+          data_aplicacao: string
+          id: string
+          lote: string | null
+          nome_vacina: string
+          paciente_id: string
+          proxima_dose: string | null
+          responsavel_aplicacao: string | null
+        }
+        Insert: {
+          assinante_id?: string | null
+          created_at?: string
+          data_aplicacao: string
+          id?: string
+          lote?: string | null
+          nome_vacina: string
+          paciente_id: string
+          proxima_dose?: string | null
+          responsavel_aplicacao?: string | null
+        }
+        Update: {
+          assinante_id?: string | null
+          created_at?: string
+          data_aplicacao?: string
+          id?: string
+          lote?: string | null
+          nome_vacina?: string
+          paciente_id?: string
+          proxima_dose?: string | null
+          responsavel_aplicacao?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vacinas_assinante_id_fkey"
+            columns: ["assinante_id"]
+            isOneToOne: false
+            referencedRelation: "assinantes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vacinas_paciente_id_fkey"
+            columns: ["paciente_id"]
+            isOneToOne: false
+            referencedRelation: "pacientes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

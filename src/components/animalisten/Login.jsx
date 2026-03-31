@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { LogIn } from 'lucide-react';
+import { PawPrint as Paw, ArrowRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -10,21 +10,14 @@ export default function Login({ onLogin }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !senha) {
-      toast.error('Preencha email e senha');
-      return;
-    }
+    if (!email || !senha) { toast.error('Preencha email e senha'); return; }
 
     setLoading(true);
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password: senha,
-      });
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha });
       if (error) throw error;
 
-      // Check if user is a veterinario (assinante)
-      const { data: assinante, error: assinanteError } = await supabase
+      const { data: assinante } = await supabase
         .from('assinantes')
         .select('*')
         .eq('user_id', data.user.id)
@@ -58,44 +51,42 @@ export default function Login({ onLogin }) {
   };
 
   return (
-    <div className="login-page">
-      <div className="login-card">
-        <div className="login-logo">
-          <img src="/logo.png" alt="AnimaListen" />
-          <h1>AnimaListen</h1>
-          <p>Sistema Veterinários</p>
-        </div>
+    <div className="login-screen">
+      <div className="login-container">
+        <div className="login-card">
+          <div className="login-logo-container">
+            <div className="logo-circle">
+              <Paw className="logo-icon-large" />
+            </div>
+            <h1>AnimalListen</h1>
+            <p>Sistema Veterinário Premium</p>
+          </div>
 
-        <form className="login-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label className="form-label">E-mail</label>
+          <form className="login-action" onSubmit={handleSubmit}>
             <input
               type="email"
-              className="form-input"
-              placeholder="Digite seu email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="pront-input"
+              placeholder="Email"
+              autoComplete="username"
               required
             />
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Senha</label>
             <input
               type="password"
-              className="form-input"
-              placeholder="••••••••"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
+              className="pront-input"
+              placeholder="Senha"
+              autoComplete="current-password"
               required
             />
-          </div>
-
-          <button type="submit" className="login-btn" disabled={loading}>
-            <LogIn size={20} />
-            {loading ? 'Entrando...' : 'Entrar'}
-          </button>
-        </form>
+            <button type="submit" className="btn-premium" disabled={loading}>
+              <span>{loading ? 'Acessando...' : 'Acessar Sistema'}</span>
+              {!loading && <ArrowRight size={20} />}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

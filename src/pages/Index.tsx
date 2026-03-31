@@ -10,9 +10,13 @@ import Internacao from '../components/animalisten/Internacao';
 import HistoricoPaciente from '../components/animalisten/HistoricoPaciente';
 import CadastroTutor from '../components/animalisten/CadastroTutor';
 import Configuracoes from '../components/animalisten/Configuracoes';
+import AnimaisPage from '../components/animalisten/AnimaisPage';
+import TriagemPage from '../components/animalisten/TriagemPage';
 import { useProntuarios } from '../hooks/useProntuarios';
 import { useInternacoes } from '../hooks/useInternacoes';
 import { useTutores } from '../hooks/useTutores';
+import { useTriagens } from '../hooks/useTriagens';
+import { Menu } from 'lucide-react';
 
 function Index() {
   const [user, setUser] = useState(null);
@@ -23,253 +27,85 @@ function Index() {
 
   const assinanteId = user?.assinante_id;
 
-  const {
-    prontuarios,
-    isLoading: loadingProntuarios,
-    saveProntuario,
-    deleteProntuario,
-  } = useProntuarios(assinanteId);
+  const { prontuarios, isLoading: loadingProntuarios, saveProntuario, deleteProntuario } = useProntuarios(assinanteId);
+  const { internacoes, isLoading: loadingInternacoes, addInternacao, updateStatus, updatePaciente, addRegistro, updateRegistro, deleteRegistro } = useInternacoes(assinanteId);
+  const { tutores, isLoading: loadingTutores, saveTutor, deleteTutor, savePaciente, deletePaciente } = useTutores(assinanteId);
+  const { triagens, isLoading: loadingTriagens, addTriagem, markAtendida } = useTriagens(assinanteId);
 
-  const {
-    internacoes,
-    isLoading: loadingInternacoes,
-    addInternacao,
-    updateStatus,
-    updatePaciente,
-    addRegistro,
-    updateRegistro,
-    deleteRegistro,
-  } = useInternacoes(assinanteId);
-
-  const {
-    tutores,
-    isLoading: loadingTutores,
-    saveTutor,
-    deleteTutor,
-    savePaciente,
-    deletePaciente,
-  } = useTutores(assinanteId);
-
-  // Check existing session on mount
   useEffect(() => {
     let mounted = true;
-
     const restoreUser = async (authUser) => {
       try {
-        const { data: assinante } = await supabase
-          .from('assinantes')
-          .select('*')
-          .eq('user_id', authUser.id)
-          .maybeSingle();
-
+        const { data: assinante } = await supabase.from('assinantes').select('*').eq('user_id', authUser.id).maybeSingle();
         if (mounted && assinante && assinante.status === 'ativo') {
-          setUser({
-            id: authUser.id,
-            nome: assinante.nome,
-            email: assinante.email,
-            crmv: assinante.crmv,
-            assinante_id: assinante.id,
-            senha_alterada: assinante.senha_alterada,
-          });
+          setUser({ id: authUser.id, nome: assinante.nome, email: assinante.email, crmv: assinante.crmv, assinante_id: assinante.id, senha_alterada: assinante.senha_alterada });
         }
-      } catch {
-        // ignore
-      }
+      } catch {}
       if (mounted) setCheckingSession(false);
     };
-
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_OUT') {
-        if (mounted) {
-          setUser(null);
-          setCheckingSession(false);
-        }
-        return;
-      }
-      if (session?.user && !user) {
-        restoreUser(session.user);
-      } else if (!session?.user) {
-        if (mounted) setCheckingSession(false);
-      }
+      if (event === 'SIGNED_OUT') { if (mounted) { setUser(null); setCheckingSession(false); } return; }
+      if (session?.user && !user) restoreUser(session.user);
+      else if (!session?.user && mounted) setCheckingSession(false);
     });
-
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        restoreUser(session.user);
-      } else if (mounted) {
-        setCheckingSession(false);
-      }
-    }).catch(() => {
-      if (mounted) setCheckingSession(false);
-    });
-
-    return () => {
-      mounted = false;
-      subscription.unsubscribe();
-    };
+      if (session?.user) restoreUser(session.user);
+      else if (mounted) setCheckingSession(false);
+    }).catch(() => { if (mounted) setCheckingSession(false); });
+    return () => { mounted = false; subscription.unsubscribe(); };
   }, []);
 
-  const handleLogin = (userData) => {
-    setUser(userData);
-  };
+  const handleLogout = async () => { await supabase.auth.signOut(); setUser(null); setCurrentPage('dashboard'); setSelectedProntuario(null); };
+  const handleNavigate = (page) => { setCurrentPage(page); setSelectedProntuario(null); setSidebarOpen(false); };
+  const handleSelectProntuario = (p) => { setSelectedProntuario(p); setCurrentPage('prontuario'); setSidebarOpen(false); };
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-    setCurrentPage('dashboard');
-    setSelectedProntuario(null);
-  };
+  if (checkingSession) return <div className="login-page"><div className="empty-state"><div className="spinner" /><p>Carregando...</p></div></div>;
+  if (!user) return <Login onLogin={setUser} />;
+  if (!user.senha_alterada) return <AlterarSenha onSuccess={() => setUser(prev => ({ ...prev, senha_alterada: true }))} />;
 
-  const handlePasswordChanged = () => {
-    setUser((prev) => ({ ...prev, senha_alterada: true }));
-  };
-
-  const handleNavigate = (page) => {
-    setCurrentPage(page);
-    setSelectedProntuario(null);
-    setSidebarOpen(false);
-  };
-
-  const handleSelectProntuario = (prontuario) => {
-    setSelectedProntuario(prontuario);
-    setCurrentPage('prontuario');
-    setSidebarOpen(false);
-  };
-
-  const handleSaveProntuario = async (prontuarioData) => {
-    await saveProntuario(prontuarioData);
-  };
-
-  if (checkingSession) {
-    return (
-      <div className="login-page">
-        <div className="empty-state">
-          <div className="spinner" />
-          <p>Carregando...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return <Login onLogin={handleLogin} />;
-  }
-
-  // Force password change on first login
-  if (!user.senha_alterada) {
-    return <AlterarSenha onSuccess={handlePasswordChanged} />;
-  }
-
-  const isLoading = loadingProntuarios || loadingInternacoes || loadingTutores;
+  const isLoading = loadingProntuarios || loadingInternacoes || loadingTutores || loadingTriagens;
 
   const renderPage = () => {
-    if (isLoading) {
-      return (
-        <div className="empty-state">
-          <div className="spinner" />
-          <p>Carregando dados...</p>
-        </div>
-      );
-    }
+    if (isLoading) return <div className="empty-state"><div className="spinner" /><p>Carregando dados...</p></div>;
 
     switch (currentPage) {
       case 'dashboard':
-        return (
-          <Dashboard
-            prontuarios={prontuarios}
-            onNavigate={handleNavigate}
-            onSelectProntuario={handleSelectProntuario}
-          />
-        );
+        return <Dashboard prontuarios={prontuarios} tutores={tutores} internacoes={internacoes} triagens={triagens} onNavigate={handleNavigate} onSelectProntuario={handleSelectProntuario} />;
       case 'tutores':
-        return (
-          <CadastroTutor
-            tutores={tutores}
-            onSaveTutor={saveTutor}
-            onDeleteTutor={deleteTutor}
-            onSavePaciente={savePaciente}
-            onDeletePaciente={deletePaciente}
-          />
-        );
+        return <CadastroTutor tutores={tutores} onSaveTutor={saveTutor} onDeleteTutor={deleteTutor} onSavePaciente={savePaciente} onDeletePaciente={deletePaciente} />;
+      case 'animais':
+        return <AnimaisPage tutores={tutores} onSavePaciente={savePaciente} onDeletePaciente={deletePaciente} onNavigate={handleNavigate} />;
+      case 'triagem':
+        return <TriagemPage mode="nova" tutores={tutores} triagens={triagens} onAddTriagem={addTriagem} onMarkAtendida={markAtendida} onNavigate={handleNavigate} />;
+      case 'triagens-pendentes':
+        return <TriagemPage mode="fila" tutores={tutores} triagens={triagens} onAddTriagem={addTriagem} onMarkAtendida={markAtendida} onNavigate={handleNavigate} />;
       case 'prontuario-hub':
-        return (
-          <ProntuarioHub
-            prontuarios={prontuarios}
-            onNavigate={handleNavigate}
-            onSelectProntuario={handleSelectProntuario}
-          />
-        );
+        return <ProntuarioHub prontuarios={prontuarios} onNavigate={handleNavigate} onSelectProntuario={handleSelectProntuario} />;
       case 'prontuario-novo':
       case 'prontuario':
-        return (
-          <Prontuario
-            prontuario={selectedProntuario}
-            onBack={() => {
-              setSelectedProntuario(null);
-              setCurrentPage('prontuario-hub');
-            }}
-            onSave={handleSaveProntuario}
-            onSelectProntuario={handleSelectProntuario}
-            onDeleteProntuario={deleteProntuario}
-          />
-        );
+        return <Prontuario prontuario={selectedProntuario} onBack={() => { setSelectedProntuario(null); setCurrentPage('prontuario-hub'); }} onSave={saveProntuario} onSelectProntuario={handleSelectProntuario} onDeleteProntuario={deleteProntuario} />;
       case 'internacao':
-        return (
-          <Internacao
-            internacoes={internacoes}
-            onAddInternacao={addInternacao}
-            onUpdateStatus={updateStatus}
-            onUpdatePaciente={updatePaciente}
-            onAddRegistro={addRegistro}
-            onUpdateRegistro={updateRegistro}
-            onDeleteRegistro={deleteRegistro}
-          />
-        );
+        return <Internacao internacoes={internacoes} onAddInternacao={addInternacao} onUpdateStatus={updateStatus} onUpdatePaciente={updatePaciente} onAddRegistro={addRegistro} onUpdateRegistro={updateRegistro} onDeleteRegistro={deleteRegistro} />;
       case 'historico':
-        return (
-          <HistoricoPaciente
-            prontuarios={prontuarios}
-            onSelectProntuario={handleSelectProntuario}
-          />
-        );
+        return <HistoricoPaciente prontuarios={prontuarios} onSelectProntuario={handleSelectProntuario} />;
       case 'configuracoes':
         return <Configuracoes />;
       default:
-        return (
-          <Dashboard
-            prontuarios={prontuarios}
-            onNavigate={handleNavigate}
-            onSelectProntuario={handleSelectProntuario}
-          />
-        );
+        return <Dashboard prontuarios={prontuarios} tutores={tutores} internacoes={internacoes} triagens={triagens} onNavigate={handleNavigate} onSelectProntuario={handleSelectProntuario} />;
     }
   };
 
   return (
-    <div className="app-layout">
-      {sidebarOpen && (
-        <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />
-      )}
-      <Sidebar
-        currentPage={currentPage}
-        onNavigate={handleNavigate}
-        user={user}
-        onLogout={handleLogout}
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-      />
+    <div className="app-container">
+      {sidebarOpen && <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />}
+      <Sidebar currentPage={currentPage} onNavigate={handleNavigate} user={user} onLogout={handleLogout} isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <main className="main-content">
-        <button
-          className="mobile-menu-btn"
-          onClick={() => setSidebarOpen(true)}
-          aria-label="Abrir menu"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="3" y1="12" x2="21" y2="12" />
-            <line x1="3" y1="18" x2="21" y2="18" />
-          </svg>
-        </button>
+        <div className="mobile-top-bar">
+          <button className="mobile-menu-btn" onClick={() => setSidebarOpen(true)} aria-label="Menu">
+            <Menu size={22} />
+          </button>
+          <span className="mobile-top-logo">AnimalListen</span>
+        </div>
         {renderPage()}
       </main>
     </div>
