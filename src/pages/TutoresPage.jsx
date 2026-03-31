@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Plus, Edit, Phone, Mail, MapPin, X, PawPrint as Paw, FileText, BadgeCheck } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import Select from 'react-select';
-import { apiJson } from '../utils/api';
+import { apiJson } from '@/utils/api';
 
 const formatCep = (value = '') => {
   const digits = value.replace(/\D/g, '').slice(0, 8);

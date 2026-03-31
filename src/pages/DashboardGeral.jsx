@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Users, PawPrint as Paw, AlertCircle, FileText, Bed } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { apiJson } from '../utils/api';
+import { useAuth } from '@/contexts/AuthContext';
+import { apiJson } from '@/utils/api';
 
 const DashboardGeral = ({ setCurrentPage }) => {
   const [stats, setStats] = useState({

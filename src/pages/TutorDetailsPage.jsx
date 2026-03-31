@@ -3,9 +3,9 @@ import {
   ArrowLeft, Edit, Phone, MapPin, User, Clock,
   PawPrint as Paw, FileText, Bell
 } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { TutorModal } from './TutoresPage';
-import { apiJson } from '../utils/api';
+import { useAuth } from '@/contexts/AuthContext';
+import { TutorModal } from '@/pages/TutoresPage';
+import { apiJson } from '@/utils/api';
 
 const TABS = [
   { id: 'animais', label: 'Animais', icon: Paw },

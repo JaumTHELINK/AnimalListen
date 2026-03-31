@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Activity, Users, PawPrint as Paw, AlertCircle, FileText, Bed, LogOut, ListOrdered, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Sidebar = ({ currentPage, setCurrentPage, mobileOpen }) => {
   const { user, logout } = useAuth();

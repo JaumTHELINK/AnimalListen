@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { 
   Plus, Bed, Heart, AlertTriangle, Eye, Activity, 
   Thermometer, UtensilsCrossed, Clock, Camera, X, PawPrint, Droplets, Pill, Search, ChevronRight
 } from 'lucide-react';
-import InternacaoDetalhes from '../components/InternacaoDetalhes';
+import InternacaoDetalhes from '@/components/InternacaoDetalhes';
 import Select from 'react-select';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ptBR } from 'date-fns/locale';
-import './Internacoes.css';
-import { apiJson } from '../utils/api';
+
+import { apiJson } from '@/utils/api';
 
 registerLocale('pt-BR', ptBR);
 

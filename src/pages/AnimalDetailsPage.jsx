@@ -5,9 +5,9 @@ import {
   Paperclip, FileCheck, Phone, MapPin, PawPrint as Paw, User, Search,
   Trash2, Plus, Weight, ClipboardList, Scale, TrendingUp, TrendingDown, Minus, AlertTriangle, CheckCircle2, CalendarClock, X
 } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { AnimalModal } from './AnimaisPage';
-import { apiJson, apiRequest } from '../utils/api';
+import { useAuth } from '@/contexts/AuthContext';
+import { AnimalModal } from '@/pages/AnimaisPage';
+import { apiJson, apiRequest } from '@/utils/api';
 
 const TABS = [
   { id: 'historico', label: 'Histórico', icon: Clock },

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Plus, Edit, PawPrint as Paw, User, Calendar, Activity, X, Upload, FileText, Scale, Dog, Cat, Bird, Rat, Cpu } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import Select from 'react-select';
-import { apiJson } from '../utils/api';
+import { apiJson } from '@/utils/api';
 
 export const AnimalModal = ({ animal, tutores, onClose, onSave }) => {
   const { token } = useAuth();

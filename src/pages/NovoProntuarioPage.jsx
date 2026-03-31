@@ -15,10 +15,10 @@ import {
   Stethoscope,
   Check,
 } from 'lucide-react';
-import AudioUpload from '../components/AudioUpload';
-import { useAuth } from '../contexts/AuthContext';
-import { apiJson } from '../utils/api';
-import './Prontuario.css';
+import AudioUpload from '@/components/AudioUpload';
+import { useAuth } from '@/contexts/AuthContext';
+import { apiJson } from '@/utils/api';
+
 
 export default function NovoProntuarioPage({ triagemId, setCurrentPage, prontuarioOriginal = null }) {
   const { token } = useAuth();

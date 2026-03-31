@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PawPrint as Paw, ArrowRight } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 const LoginScreen = () => {
   const [loading, setLoading] = useState(false);

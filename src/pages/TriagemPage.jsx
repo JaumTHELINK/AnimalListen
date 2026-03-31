@@ -4,8 +4,8 @@ import {
   Plus, AlertCircle, Clock, CheckCircle, MessageSquare, 
   PawPrint, User, AlertTriangle, ClipboardList, Trash2
 } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { apiJson, apiRequest } from '../utils/api';
+import { useAuth } from '@/contexts/AuthContext';
+import { apiJson, apiRequest } from '@/utils/api';
 
 const PRIORITY_CONFIG = {
   leve: {

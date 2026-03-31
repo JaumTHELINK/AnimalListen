@@ -6,8 +6,8 @@ import {
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ptBR } from 'date-fns/locale';
-import '../pages/Internacoes.css';
-import { apiJson, apiRequest } from '../utils/api';
+
+import { apiJson, apiRequest } from '@/utils/api';
 
 registerLocale('pt-BR', ptBR);
 

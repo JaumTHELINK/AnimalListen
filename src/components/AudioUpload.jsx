@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { Mic, Square, Loader2, FileAudio, Pause, Play, RotateCcw } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { AI_API_BASE_URL, apiJson } from '../utils/api';
-import './AudioUpload.css';
+import { useAuth } from '@/contexts/AuthContext';
+import { AI_API_BASE_URL, apiJson } from '@/utils/api';
+import '@/components/AudioUpload.css';
 
 export default function AudioUpload({ onTranscription }) {
   const { token } = useAuth();
