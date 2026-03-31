@@ -2295,7 +2295,6 @@ body {
     --sidebar-ring: 221 83% 53%;
   }
 }
-  min-height: 100vh;
   background: var(--color-bg);
 }
 
