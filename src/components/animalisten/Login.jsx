@@ -44,7 +44,7 @@ export default function Login({ onLogin }) {
         senha_alterada: assinante.senha_alterada,
       });
     } catch (err) {
-      toast.error('Erro no login: ' + err.message);
+      toast.error('Email ou senha inválidos. Tente novamente.');
     } finally {
       setLoading(false);
     }

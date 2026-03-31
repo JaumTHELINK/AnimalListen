@@ -38,7 +38,7 @@ export default function AlterarSenha({ onSuccess }) {
       toast.success('Senha alterada com sucesso!');
       onSuccess();
     } catch (err) {
-      toast.error('Erro ao alterar senha: ' + err.message);
+      toast.error('Erro ao alterar senha. Tente novamente.');
     } finally {
       setLoading(false);
     }
