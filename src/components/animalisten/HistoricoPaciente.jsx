@@ -45,7 +45,7 @@ export default function HistoricoPaciente({ prontuarios, onSelectProntuario }) {
       {/* Search */}
       <div className="card mb-4" style={{ padding: '12px 20px' }}>
         <div className="flex items-center gap-3">
-          <Search size={18} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
+          <Search size={18} style={{ color: 'var(--color-text-muted)', flexShrink: 0 }} />
           <input
             type="text"
             className="form-input"
@@ -72,8 +72,8 @@ export default function HistoricoPaciente({ prontuarios, onSelectProntuario }) {
                     {group.tutor_nome}
                   </h3>
                   <div className="flex items-center gap-2">
-                    <CreditCard size={12} style={{ color: 'var(--text-muted)' }} />
-                    <span className="text-xs" style={{ color: 'var(--text-muted)', fontWeight: 600 }}>
+                    <CreditCard size={12} style={{ color: 'var(--color-text-muted)' }} />
+                    <span className="text-xs" style={{ color: 'var(--color-text-muted)', fontWeight: 600 }}>
                       {group.tutor_cpf}
                     </span>
                   </div>
@@ -101,11 +101,11 @@ export default function HistoricoPaciente({ prontuarios, onSelectProntuario }) {
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div className="flex items-center gap-2 mb-1" style={{ flexWrap: 'wrap' }}>
                           <span style={{ fontWeight: 700, fontSize: '0.9rem' }}>{p.animal_nome}</span>
-                          <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
+                          <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
                             {p.animal_especie} • {p.animal_raca}
                           </span>
                         </div>
-                        <p className="text-sm truncate" style={{ color: 'var(--text-secondary)' }}>
+                        <p className="text-sm truncate" style={{ color: 'var(--color-text-secondary)' }}>
                           {p.queixa_principal}
                         </p>
                       </div>
@@ -119,7 +119,7 @@ export default function HistoricoPaciente({ prontuarios, onSelectProntuario }) {
                         <FileText size={12} />
                         <span>#{p.numero_prontuario}</span>
                       </div>
-                      <ChevronRight size={16} style={{ color: 'var(--text-muted)' }} />
+                      <ChevronRight size={16} style={{ color: 'var(--color-text-muted)' }} />
                     </div>
                   </div>
                 ))}

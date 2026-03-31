@@ -136,7 +136,7 @@ export default function AudioUpload({ onTranscription }) {
         >
           {isRecording ? <MicOff size={32} /> : <Mic size={32} />}
         </button>
-        <p className="text-sm mt-2" style={{ color: isRecording ? '#ef4444' : 'var(--text-muted)', fontWeight: 600 }}>
+        <p className="text-sm mt-2" style={{ color: isRecording ? '#ef4444' : 'var(--color-text-muted)', fontWeight: 600 }}>
           {isRecording ? '🔴 Gravando... clique para parar' : 'Clique para gravar'}
         </p>
       </div>
@@ -144,7 +144,7 @@ export default function AudioUpload({ onTranscription }) {
       {/* Divisor */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '20px 0' }}>
         <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
-        <span className="text-xs" style={{ color: 'var(--text-muted)', fontWeight: 600 }}>OU</span>
+        <span className="text-xs" style={{ color: 'var(--color-text-muted)', fontWeight: 600 }}>OU</span>
         <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
       </div>
 
@@ -154,11 +154,11 @@ export default function AudioUpload({ onTranscription }) {
         onClick={() => !isTranscribing && fileInputRef.current?.click()}
         style={{ opacity: isTranscribing ? 0.5 : 1, cursor: isTranscribing ? 'not-allowed' : 'pointer' }}
       >
-        <Upload size={28} style={{ color: 'var(--text-muted)', margin: '0 auto 8px' }} />
-        <p className="text-sm font-bold" style={{ color: 'var(--text-secondary)' }}>
+        <Upload size={28} style={{ color: 'var(--color-text-muted)', margin: '0 auto 8px' }} />
+        <p className="text-sm font-bold" style={{ color: 'var(--color-text-secondary)' }}>
           Enviar arquivo de áudio
         </p>
-        <p className="text-xs" style={{ color: 'var(--text-muted)', marginTop: '4px' }}>
+        <p className="text-xs" style={{ color: 'var(--color-text-muted)', marginTop: '4px' }}>
           .mp3, .wav, .webm, .ogg
         </p>
         <input
@@ -185,7 +185,7 @@ export default function AudioUpload({ onTranscription }) {
           </button>
           <div style={{ flex: 1 }}>
             <div className="flex items-center gap-2">
-              <FileAudio size={14} style={{ color: 'var(--primary)' }} />
+              <FileAudio size={14} style={{ color: 'var(--color-primary)' }} />
               <span className="text-sm font-bold">
                 {audioFile?.name || 'Gravação'}
               </span>
@@ -196,7 +196,7 @@ export default function AudioUpload({ onTranscription }) {
               onEnded={() => setIsPlaying(false)}
             />
           </div>
-          <button className="btn btn-icon btn-ghost" onClick={removeAudio} disabled={isTranscribing} style={{ color: 'var(--danger)' }}>
+          <button className="btn btn-icon btn-ghost" onClick={removeAudio} disabled={isTranscribing} style={{ color: 'var(--color-danger)' }}>
             <X size={16} />
           </button>
         </div>
@@ -227,7 +227,7 @@ export default function AudioUpload({ onTranscription }) {
       {/* Sucesso */}
       {transcriptionDone && (
         <div className="transcription-success" style={{ marginTop: '12px' }}>
-          <p className="text-sm" style={{ color: 'var(--secondary)', fontWeight: 700, textAlign: 'center' }}>
+          <p className="text-sm" style={{ color: 'var(--color-success)', fontWeight: 700, textAlign: 'center' }}>
             ✅ Transcrição concluída! Dados preenchidos no prontuário.
           </p>
         </div>

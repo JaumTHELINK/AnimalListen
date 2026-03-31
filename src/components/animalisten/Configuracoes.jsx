@@ -18,8 +18,8 @@ export default function Configuracoes() {
   return (
     <div className="animate-fade">
       <div className="page-header">
-        <div className="page-header-content">
-          <div className="page-icon" style={{ background: 'var(--primary)' }}>
+          <div className="page-header-content">
+          <div className="page-icon" style={{ background: 'var(--color-primary)' }}>
             <Settings size={24} color="white" />
           </div>
           <div>
@@ -46,7 +46,7 @@ export default function Configuracoes() {
               onChange={(e) => setCustomColor(e.target.value)}
               className="color-picker"
             />
-            <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{customColor}</span>
+            <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{customColor}</span>
           </div>
         </div>
 
@@ -60,8 +60,8 @@ export default function Configuracoes() {
               <img src={customLogo} alt="Logo" className="logo-preview" />
             ) : (
               <>
-                <Upload size={20} style={{ color: 'var(--text-muted)' }} />
-                <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Upload logo</span>
+                <Upload size={20} style={{ color: 'var(--color-text-muted)' }} />
+                <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Upload logo</span>
               </>
             )}
           </div>

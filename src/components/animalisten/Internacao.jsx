@@ -160,12 +160,12 @@ export default function Internacao({
                     />
                   ) : (
                     <div className="card-avatar">
-                      <PawPrint size={20} style={{ color: 'var(--primary)' }} />
+                      <PawPrint size={20} style={{ color: 'var(--color-primary)' }} />
                     </div>
                   )}
                   <div>
                     <h4 style={{ fontWeight: 700 }}>{intern.animal_nome}</h4>
-                    <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
+                    <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
                       {intern.animal_especie} • {intern.animal_raca} • {intern.animal_peso}kg
                     </p>
                   </div>
@@ -175,10 +175,10 @@ export default function Internacao({
                 </span>
               </div>
 
-              <p className="text-sm mb-2" style={{ color: 'var(--text-secondary)' }}>
+              <p className="text-sm mb-2" style={{ color: 'var(--color-text-secondary)' }}>
                 <strong>Motivo:</strong> {intern.motivo}
               </p>
-              <p className="text-xs mb-4" style={{ color: 'var(--text-muted)' }}>
+              <p className="text-xs mb-4" style={{ color: 'var(--color-text-muted)' }}>
                 <strong>Tutor:</strong> {intern.tutor_nome} • {intern.tutor_telefone}
               </p>
 
@@ -187,41 +187,41 @@ export default function Internacao({
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-1 mb-1">
                     <Heart size={12} style={{ color: '#ef4444' }} />
-                    <span className="text-xs" style={{ color: 'var(--text-muted)' }}>BPM</span>
+                    <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>BPM</span>
                   </div>
-                  <span className="font-bold" style={{ fontSize: '1.1rem', color: 'var(--text-primary)' }}>
+                  <span className="font-bold" style={{ fontSize: '1.1rem', color: 'var(--color-text)' }}>
                     {lastBpm?.valor || '—'}
                   </span>
-                  {lastBpm && <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{formatTime(lastBpm.hora)}</p>}
+                  {lastBpm && <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{formatTime(lastBpm.hora)}</p>}
                 </div>
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-1 mb-1">
                     <Thermometer size={12} style={{ color: '#f59e0b' }} />
-                    <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Temp</span>
+                    <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Temp</span>
                   </div>
-                  <span className="font-bold" style={{ fontSize: '1.1rem', color: 'var(--text-primary)' }}>
+                  <span className="font-bold" style={{ fontSize: '1.1rem', color: 'var(--color-text)' }}>
                     {lastTemp ? `${lastTemp.valor}°` : '—'}
                   </span>
-                  {lastTemp && <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{formatTime(lastTemp.hora)}</p>}
+                  {lastTemp && <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{formatTime(lastTemp.hora)}</p>}
                 </div>
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-1 mb-1">
                     <UtensilsCrossed size={12} style={{ color: '#22c55e' }} />
-                    <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Comeu</span>
+                    <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Comeu</span>
                   </div>
                   <span className="font-bold" style={{ fontSize: '1.1rem', color: lastFood?.valor === 'Sim' ? '#22c55e' : '#ef4444' }}>
                     {lastFood?.valor || '—'}
                   </span>
-                  {lastFood && <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{formatTime(lastFood.hora)}</p>}
+                  {lastFood && <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{formatTime(lastFood.hora)}</p>}
                 </div>
               </div>
 
               <div className="flex justify-between items-center mt-2">
-                <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
+                <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
                   <Clock size={12} style={{ display: 'inline', marginRight: '4px', verticalAlign: 'middle' }} />
                   Internado em {new Date(intern.data_internacao).toLocaleDateString('pt-BR')}
                 </span>
-                <span className="text-xs font-bold" style={{ color: 'var(--primary)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--color-primary)' }}>
                   {(intern.registros || []).length} registros →
                 </span>
               </div>
@@ -263,8 +263,8 @@ export default function Internacao({
                   <img src={newForm.foto} alt="Foto do paciente" className="photo-preview" />
                 ) : (
                   <>
-                    <Camera size={28} style={{ color: 'var(--text-muted)' }} />
-                    <span className="text-xs" style={{ color: 'var(--text-muted)', marginTop: '4px' }}>
+                    <Camera size={28} style={{ color: 'var(--color-text-muted)' }} />
+                    <span className="text-xs" style={{ color: 'var(--color-text-muted)', marginTop: '4px' }}>
                       Foto do paciente
                     </span>
                   </>

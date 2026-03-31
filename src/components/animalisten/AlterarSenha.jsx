@@ -48,7 +48,7 @@ export default function AlterarSenha({ onSuccess }) {
     <div className="login-page">
       <div className="login-card">
         <div className="login-logo">
-          <Lock size={48} style={{ color: 'var(--primary)' }} />
+          <Lock size={48} style={{ color: 'var(--color-primary)' }} />
           <h1>Alterar Senha</h1>
           <p>Por segurança, altere sua senha padrão no primeiro acesso.</p>
         </div>
