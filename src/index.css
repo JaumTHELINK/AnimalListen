@@ -4081,19 +4081,6 @@ textarea.form-control {
 /* Compact pill button for actions */
 .btn-pill { padding: 8px 12px; border-radius: 999px; display: inline-flex; align-items: center; gap: 8px; }
 
- / *   E s t i l o s   p a r a   o   R e a c t   D a t e P i c k e r   * / 
- . d a t e - p i c k e r - w r a p p e r   { 
-     w i d t h :   1 0 0 % ; 
- } 
- . r e a c t - d a t e p i c k e r - w r a p p e r   { 
-     w i d t h :   1 0 0 % ; 
- } 
- . r e a c t - d a t e p i c k e r _ _ t i m e - c o n t a i n e r   . r e a c t - d a t e p i c k e r _ _ t i m e   . r e a c t - d a t e p i c k e r _ _ t i m e - b o x   u l . r e a c t - d a t e p i c k e r _ _ t i m e - l i s t   l i . r e a c t - d a t e p i c k e r _ _ t i m e - l i s t - i t e m - - d i s a b l e d   { 
-     d i s p l a y :   n o n e   ! i m p o r t a n t ; 
- } 
- 
- 
- 
 /* Glicose timeline badge */
 .t-badge.purple { background: #f3e8ff; color: #7c3aed; }
 
