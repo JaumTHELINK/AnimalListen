@@ -81,6 +81,7 @@ body {
   flex: 1;
   overflow-y: auto;
   background: var(--color-bg);
+  padding: 32px;
 }
 
 /* ==================== SIDEBAR ==================== */
